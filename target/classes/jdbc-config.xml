@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dataSource"
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/VyatSU"/>
+        <property name="username" value="root"/>
+        <property name="password" value="!_qdSmo27"/>
+    </bean>
+
+    <bean id="TeacherDAO"
+          class="tables.TeacherDAO">
+        <property name="dataSource"  ref="dataSource" />
+    </bean>
+
+    <bean id="StudentDAO"
+          class="tables.StudentDAO">
+        <property name="dataSource"  ref="dataSource" />
+    </bean>
+
+    <bean id="SujectDAO"
+          class="tables.SubjectDAO">
+        <property name="dataSource"  ref="dataSource" />
+    </bean>
+
+    <bean id="UserInfoDAO"
+          class="tables.UserInfoDAO">
+        <property name="dataSource"  ref="dataSource" />
+    </bean>
+
+    <bean id="UserDAO"
+          class="tables.UserDAO">
+        <property name="dataSource"  ref="dataSource" />
+    </bean>
+
+    <bean id="GroupDAO"
+          class="tables.GroupDAO">
+        <property name="dataSource"  ref="dataSource" />
+    </bean>
+
+    <bean id="ScheduleDAO"
+          class="tables.ScheduleDAO">
+        <property name="dataSource"  ref="dataSource" />
+    </bean>
+
+</beans>
