@@ -1,5 +1,6 @@
 package tables;
 
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,7 +24,7 @@ public class UserDAO {
     }
 
 
-    public void create(String login, String password) {
+    public void create(String login, String password) throws MySQLIntegrityConstraintViolationException {
         String sql = "Insert into User(Login, Password) values(?, ?)";
 
         this.jdbcTemplate.update(sql, login, password);
@@ -33,6 +34,15 @@ public class UserDAO {
         String sql = "Update User set password = ? where login = ?";
 
         this.jdbcTemplate.update(sql, password, login);
+    }
+
+    public Integer getIDByLogin(String login) {
+        String sql = "Select ID from `User` where login = ?";
+        return this.jdbcTemplate.queryForObject(sql, new Object[] {login}, new RowMapper<Integer>() {
+            public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
+                return Integer.valueOf(resultSet.getInt("ID"));
+            }
+        });
     }
 
     public User getUserByLogin(String login){

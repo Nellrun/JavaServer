@@ -46,6 +46,16 @@ public class UserInfoDAO {
         this.jdbcTemplate.update(sql, userID, firstName, secondName, middleName, gender);
     }
 
+    public void create(int userID, String firstName, String secondName, String middleName) {
+        String sql = "Insert into `UserInfo`(UserID, FirstName, SecondName, MiddleName) VALUES(?, ?, ?, ?)";
+        this.jdbcTemplate.update(sql, userID, firstName, secondName, middleName);
+    }
+
+    public void update(int userID, String firstName, String secondName, String middleName) {
+        String sql = "UPDATE `UserInfo` set FirstName = ?, SecondName = ?, MiddleName = ? where UserID = ?) VALUES(?, ?, ?, ?)";
+        this.jdbcTemplate.update(sql, userID, firstName, secondName, middleName);
+    }
+
     public UserInfo getUserInfoByID(int id) {
         String sql = "Select * from `UserInfo` where UserID = ?";
         return this.jdbcTemplate.queryForObject(sql, new Object[] {id}, new UserInfoMapper());

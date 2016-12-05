@@ -48,7 +48,6 @@ public class SignInPage extends HttpServlet {
 //
         if ( (login == null) || (password == null) )  {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//            resp.getWriter().write("Unauthorized");
             return;
         }
 
