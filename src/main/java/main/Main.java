@@ -26,7 +26,7 @@ public class Main {
         context.addServlet(new ServletHolder(new ChangePasswordPage(jdbcContext, sessionToLogin)), "/changePassword");
         context.addServlet(new ServletHolder(new SearchPage(jdbcContext)), "/search");
         context.addServlet(new ServletHolder(new GetSchedulePage(jdbcContext)), "/getSchedule");
-//        context.addServlet(new ServletHolder(new AboutPage(accountService)), "/about");
+        context.addServlet(new ServletHolder(new LogoutPage(sessionToLogin)), "/logout");
 
         Server server = new Server(8080);
         server.setHandler(context);
