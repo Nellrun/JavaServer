@@ -21,6 +21,7 @@ public class UserInfoDAO {
             UserInfo userInfo = new UserInfo();
 
 //            userInfo.setUserID(resultSet.getInt("UserID"));
+            userInfo.setId(resultSet.getInt("ID"));
             userInfo.setFirstName(resultSet.getString("FirstName"));
             userInfo.setSecondName(resultSet.getString("SecondName"));
             userInfo.setMiddleName(resultSet.getString("MiddleName"));
@@ -56,8 +57,18 @@ public class UserInfoDAO {
         this.jdbcTemplate.update(sql, userID, firstName, secondName, middleName);
     }
 
-    public UserInfo getUserInfoByID(int id) {
+    public void update(int id, int userID) {
+        String sql = "UPDATE `UserInfo` set UserID = ? Where ID = ?";
+        this.jdbcTemplate.update(sql, userID, id);
+    }
+
+    public UserInfo getUserInfoByUserID(int id) {
         String sql = "Select * from `UserInfo` where UserID = ?";
+        return this.jdbcTemplate.queryForObject(sql, new Object[] {id}, new UserInfoMapper());
+    }
+
+    public UserInfo getUserInfoByID(int id) {
+        String sql = "Select * from `UserInfo` where ID = ?";
         return this.jdbcTemplate.queryForObject(sql, new Object[] {id}, new UserInfoMapper());
     }
 

@@ -1,5 +1,7 @@
 package tables;
 
+import com.google.gson.annotations.Expose;
+
 /**
  * Created by root on 12/4/16.
  */
@@ -9,6 +11,7 @@ public class Teacher {
     private String middleName;
     private int id;
     private int DepartamentID;
+    @Expose private int userID;
 
     public String getFirstName() {
         return firstName;
@@ -48,5 +51,13 @@ public class Teacher {
 
     public void setDepartamentID(int departamentID) {
         DepartamentID = departamentID;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 }

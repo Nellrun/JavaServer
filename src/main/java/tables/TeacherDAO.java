@@ -23,6 +23,7 @@ public class TeacherDAO {
             teacher.setSecondName(resultSet.getString("SecondName"));
             teacher.setMiddleName(resultSet.getString("MiddleName"));
             teacher.setDepartamentID(resultSet.getInt("DepartmentID"));
+            teacher.setUserID(resultSet.getInt("UserID"));
             return teacher;
         }
     }
@@ -34,7 +35,7 @@ public class TeacherDAO {
 
     public Teacher getTeacherByID(int id) {
         String sql = "Select Teacher.ID, Teacher.DepartmentID, " +
-                "UserInfo.FistName, UserInfo.SecondName, UserInfo.MiddleName from Teacher, UserInfo" +
+                "UserInfo.FirstName, UserInfo.SecondName, UserInfo.MiddleName, Teacher.UserID from Teacher, UserInfo " +
                 "Where Teacher.UserID = UserInfo.ID and Teacher.ID = ?";
         return this.jdbcTemplate.queryForObject(sql, new Object[]{id}, new TeacherRowMapper());
     }
@@ -42,7 +43,7 @@ public class TeacherDAO {
     public List<Teacher> getTeachersByName(String name) {
         name = "%" + name + "%";
         String sql = "Select Teacher.ID, Teacher.DepartmentID, " +
-                "UserInfo.FirstName, UserInfo.SecondName, UserInfo.MiddleName from Teacher, UserInfo" +
+                "UserInfo.FirstName, UserInfo.SecondName, UserInfo.MiddleName, UserInfo.UserID from Teacher, UserInfo" +
                 " Where (UserInfo.FirstName LIKE ? or UserInfo.SecondName LIKE ? or UserInfo.MiddleName LIKE ?)" +
                 " and (Teacher.UserID = UserInfo.ID)";
 
