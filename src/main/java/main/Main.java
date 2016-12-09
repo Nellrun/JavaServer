@@ -15,7 +15,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-//        AccountService accountService = new AccountService();
 
         HashMap<String, String> sessionToLogin = new HashMap<String, String>();
 
