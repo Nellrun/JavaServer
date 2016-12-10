@@ -1,4 +1,4 @@
-#Метод: user.signin <a name="user.changePassword"></a>
+#Метод: user.signin <a name="user.changePassword"/>
 Данный метод обеспечивает cмену пароля пользователя
 
 ##Параметры

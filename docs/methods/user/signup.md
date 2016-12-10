@@ -1,4 +1,4 @@
-#Метод: user.signup<a name="user.signup"></a>
+#Метод: user.signup<a name="user.signup"/>
 Данный метод осуществляет регистрацию пользователя
 
 ##Параметры
