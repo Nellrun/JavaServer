@@ -10,16 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Created by root on 12/4/16.
+ * Created by root on 12/10/16.
  */
-public class SearchPage extends HttpServlet {
-
+public class UserSearchPage extends HttpServlet{
     private final ApplicationContext context;
 
-    public SearchPage(ApplicationContext context){
+    public UserSearchPage(ApplicationContext context){
         this.context = context;
     }
 
@@ -31,7 +29,6 @@ public class SearchPage extends HttpServlet {
         String type = req.getParameter("type");
 
         resp.setContentType("text/html;charset=utf-8");
-
 
 
         if ( (name == null) || (name.equals("")) || (type == null) ) {
@@ -72,21 +69,6 @@ public class SearchPage extends HttpServlet {
             return;
         }
 
-        if (type.equals("2")) {
-//            Group
-            GroupDAO groupDAO = (GroupDAO) context.getBean("GroupDAO");
-
-            List<Group> groups = groupDAO.getGroupsByName(name);
-
-            String out = new GsonBuilder().create().toJson(groups);
-            resp.setStatus(HttpServletResponse.SC_OK);
-            resp.getWriter().write(out);
-            return;
-        }
-
         resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return;
-
-
     }
 }

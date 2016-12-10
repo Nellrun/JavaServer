@@ -20,12 +20,17 @@ public class Main {
 
         ApplicationContext jdbcContext = new ClassPathXmlApplicationContext("jdbc-config.xml");
 
-        context.addServlet(new ServletHolder(new SignUpPage(jdbcContext)), "/signup");
-        context.addServlet(new ServletHolder(new SignInPage(jdbcContext, sessionToLogin)), "/signin");
-        context.addServlet(new ServletHolder(new ChangePasswordPage(jdbcContext, sessionToLogin)), "/changePassword");
-        context.addServlet(new ServletHolder(new SearchPage(jdbcContext)), "/search");
-        context.addServlet(new ServletHolder(new GetSchedulePage(jdbcContext)), "/getSchedule");
-        context.addServlet(new ServletHolder(new LogoutPage(sessionToLogin)), "/logout");
+        context.addServlet(new ServletHolder(new SignUpPage(jdbcContext)), "/api/user.signup");
+        context.addServlet(new ServletHolder(new SignInPage(jdbcContext, sessionToLogin)), "/api/user.signin");
+        context.addServlet(new ServletHolder(new ChangePasswordPage(jdbcContext, sessionToLogin)), "/api/user.changePassword");
+        context.addServlet(new ServletHolder(new UserSearchPage(jdbcContext)), "/api/user.search");
+        context.addServlet(new ServletHolder(new UserGetPage(jdbcContext, sessionToLogin)), "/api/user.get");
+        context.addServlet(new ServletHolder(new LogoutPage(sessionToLogin)), "/api/user.logout");
+
+        context.addServlet(new ServletHolder(new GroupSearchPage(jdbcContext)), "/api/group.search");
+        context.addServlet(new ServletHolder(new GroupGetPage(jdbcContext)), "/api/group.get");
+
+        context.addServlet(new ServletHolder(new GetSchedulePage(jdbcContext)), "/api/schedule.get");
 
         Server server = new Server(8080);
         server.setHandler(context);
