@@ -34,15 +34,15 @@ public class TeacherDAO {
     }
 
     public Teacher getTeacherByID(int id) {
-        String sql = "Select Teacher.ID, Teacher.DepartmentID, " +
+        String sql = "Select UserInfo.ID, Teacher.DepartmentID, " +
                 "UserInfo.FirstName, UserInfo.SecondName, UserInfo.MiddleName, Teacher.UserID from Teacher, UserInfo " +
-                "Where Teacher.UserID = UserInfo.ID and Teacher.ID = ?";
+                "Where Teacher.UserID = UserInfo.ID and UserInfo.ID = ?";
         return this.jdbcTemplate.queryForObject(sql, new Object[]{id}, new TeacherRowMapper());
     }
 
     public List<Teacher> getTeachersByName(String name) {
         name = "%" + name + "%";
-        String sql = "Select Teacher.ID, Teacher.DepartmentID, " +
+        String sql = "Select UserInfo.ID, Teacher.DepartmentID, " +
                 "UserInfo.FirstName, UserInfo.SecondName, UserInfo.MiddleName, UserInfo.UserID from Teacher, UserInfo" +
                 " Where (UserInfo.FirstName LIKE ? or UserInfo.SecondName LIKE ? or UserInfo.MiddleName LIKE ?)" +
                 " and (Teacher.UserID = UserInfo.ID)";
