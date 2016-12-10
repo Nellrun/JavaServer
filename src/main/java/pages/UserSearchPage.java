@@ -63,7 +63,7 @@ public class UserSearchPage extends HttpServlet{
                 teachers.addAll(teacherDAO.getTeachersByName(word));
             }
 
-            String out = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(teachers);
+            String out = new GsonBuilder().create().toJson(teachers);
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().write(out);
             return;

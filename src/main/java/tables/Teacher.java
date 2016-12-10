@@ -11,7 +11,7 @@ public class Teacher {
     private String middleName;
     private int id;
     private int DepartamentID;
-    @Expose private int userID;
+    private transient int userID;
 
     public String getFirstName() {
         return firstName;

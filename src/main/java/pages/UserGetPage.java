@@ -28,6 +28,8 @@ public class UserGetPage extends HttpServlet {
         String sID = req.getParameter("id");
         String token = req.getParameter("token");
 
+        resp.setContentType("text/html;charset=utf-8");
+
         if ((sID == null) && (token == null)) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
@@ -63,8 +65,6 @@ public class UserGetPage extends HttpServlet {
 
             UserInfoDAO userInfoDAO = (UserInfoDAO) context.getBean("UserInfoDAO");
         }
-
-
 
     }
 }

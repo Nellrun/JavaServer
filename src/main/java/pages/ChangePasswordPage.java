@@ -25,22 +25,29 @@ public class ChangePasswordPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
+        String old_password = req.getParameter("old_password");
+        String password = req.getParameter("new_password");
         String token = req.getParameter("token");
 
-        if ( (login == null) || (password == null) || (token == null) ||
+        if ( (old_password == null) || (password == null) || (token == null) ||
                 (password.equals("")) || (token.equals("")) ) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
-        if ( (!sessionToLogin.containsKey(token)) || (!sessionToLogin.get(token).equals(login)) ){
+        if (!sessionToLogin.containsKey(token)) {
             resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
+        String login = sessionToLogin.get(token);
+
         UserDAO userDAO = (UserDAO) context.getBean("UserDAO");
+        if (!userDAO.getUserByLogin(login).getPassword().equals(old_password)) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
         userDAO.update(login, password);
 
         resp.setStatus(HttpServletResponse.SC_OK);
