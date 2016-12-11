@@ -1,4 +1,10 @@
 #Метод: user.search <a name="user.search"/>
+
+* * *
+###*Метод устарел*
+Рекомендуется использовать [student.search](#student.search) и [teacher.search](#teacher.search)
+* * *
+
 Данный метод позволяет найти пользователя по его фамилии, имени или отчеству.
 
 ##Параметры
