@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 /**
  * Created by root on 12/9/16.
+ * Класс осуществляющий доступ к базе данных кафедры
  */
 public class DepartmentDAO {
     private DataSource dataSource;

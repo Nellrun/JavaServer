@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 /**
  * Created by root on 12/1/16.
+ * Класс для работы с таблицей User
  */
 public class UserDAO {
 

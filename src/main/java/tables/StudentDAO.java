@@ -10,12 +10,14 @@ import java.util.List;
 
 /**
  * Created by root on 12/4/16.
+ * Класс, в котором определены методы для взаимодействия с таблице Student
  */
 public class StudentDAO {
 
     class StudentRowMapper implements RowMapper<Student> {
         public Student mapRow(ResultSet resultSet, int i) throws SQLException {
             Student student = new Student();
+            student.setId(resultSet.getInt("ID"));
             student.setFirstName(resultSet.getString("FirstName"));
             student.setSecondName(resultSet.getString("SecondName"));
             student.setMiddleName(resultSet.getString("MiddleName"));
@@ -49,14 +51,32 @@ public class StudentDAO {
         this.jdbcTemplate.update(sql, levelOfAccess, userID);
     }
 
-    public List<Student> getStudentByName(String name) {
+    public Student getStudentByID(int id) {
+        String sql = "Select Student.ID, UserInfo.FirstName, UserInfo.SecondName, UserInfo.MiddleName, " +
+                "Group.NameShort, Student.GroupID, Student.LevelOfAccess " +
+                "From `UserInfo`, `Group`, `Student`" +
+                " Where (Student.ID = ?) and (Student.UserID = UserInfo.ID) and (Student.GroupID = `Group.ID`) ";
+
+        return this.jdbcTemplate.queryForObject(sql, new Object[] {id}, new StudentRowMapper());
+    }
+
+    public List<Student> getStudentsByName(String name) {
         name = "%" + name + "%";
-        String sql = "Select UserInfo.FirstName, UserInfo.SecondName, UserInfo.MiddleName, " +
+        String sql = "Select Student.ID, UserInfo.FirstName, UserInfo.SecondName, UserInfo.MiddleName, " +
                 "Group.NameShort, Student.GroupID, Student.LevelOfAccess " +
                 "From `UserInfo`, `Group`, `Student`" +
                 " Where (UserInfo.FirstName like ? or UserInfo.SecondName like ? or UserInfo.MiddleName like ?)" +
-                " and (UserInfo.ID = Student.UserID)";
+                " and (UserInfo.ID = Student.UserID) and (Student.groupID = `Group`.ID)";
 
         return this.jdbcTemplate.query(sql, new Object[] {name, name, name}, new StudentRowMapper());
+    }
+
+    public List<Student> getStudentsByGroupID(int id) {
+        String sql = "Select Student.ID, UserInfo.FirstName, UserInfo.SecondName, UserInfo.MiddleName, " +
+                "Group.NameShort, Student.GroupID, Student.LevelOfAccess " +
+                "From `UserInfo`, `Group`, `Student`" +
+                " Where (UserInfo.ID = Student.UserID) and (`Group`.ID = ?) and (Student.GroupID = `Group`.ID)";
+
+        return this.jdbcTemplate.query(sql, new Object[] {id}, new StudentRowMapper());
     }
 }

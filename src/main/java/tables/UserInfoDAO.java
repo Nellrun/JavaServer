@@ -10,6 +10,7 @@ import java.util.List;
 
 /**
  * Created by root on 12/4/16.
+ * Класс для работы с таблицей UserInfo
  */
 public class UserInfoDAO {
 

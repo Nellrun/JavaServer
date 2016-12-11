@@ -1,6 +1,8 @@
 package pages;
 
 import com.google.gson.GsonBuilder;
+import errors.BadParameterFormatError;
+import errors.MissingParameterError;
 import org.springframework.context.ApplicationContext;
 import tables.*;
 
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 
 /**
  * Created by root on 12/10/16.
+ * Страница, которая отвечает за поиск преподавателей
+ * и студентов по их имени, фамилии и отчеству
  */
 public class UserSearchPage extends HttpServlet{
     private final ApplicationContext context;
@@ -23,14 +27,26 @@ public class UserSearchPage extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        super.doGet(req, resp);
-
         String name = req.getParameter("name");
         String type = req.getParameter("type");
 
         resp.setContentType("text/html;charset=utf-8");
 
         if ( (name == null) || (name.equals("")) || (type == null) ) {
+            String out = null;
+
+            if (name == null || type == null) {
+                MissingParameterError missingParameterError = new MissingParameterError(name == null? "name" : "type");
+                out = new GsonBuilder().create().toJson(missingParameterError);
+            }
+            else if (name.equals("")) {
+                out = new GsonBuilder().create().toJson(new BadParameterFormatError("name"));
+            }
+            else if (!type.equals("1") && type.equals("")) {
+                out = new GsonBuilder().create().toJson(new BadParameterFormatError("type"));
+            }
+
+            resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -42,7 +58,7 @@ public class UserSearchPage extends HttpServlet{
             ArrayList<Student> students = new ArrayList<Student>();
 
             for (String word: name.split(" ")) {
-                students.addAll(studentDAO.getStudentByName(word));
+                students.addAll(studentDAO.getStudentsByName(word));
             }
 
             String out = new GsonBuilder().create().toJson(students);

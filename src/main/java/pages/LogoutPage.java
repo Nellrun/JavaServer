@@ -13,6 +13,8 @@ import java.util.HashMap;
 
 /**
  * Created by root on 12/6/16.
+ * Страница для выхода из ученой записи пользователя
+ * принимает на вход token пользователя и которого требуется выйти
  */
 public class LogoutPage extends HttpServlet {
     private final HashMap<String, String> sessionToLogin;

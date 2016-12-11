@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Created by root on 12/5/16.
+ * Страница для получения расписания как для группы, так и для преподавателя
  */
 public class GetSchedulePage extends HttpServlet{
     private final ApplicationContext context;

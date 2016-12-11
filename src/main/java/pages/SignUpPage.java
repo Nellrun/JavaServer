@@ -15,6 +15,8 @@ import java.io.PrintWriter;
 
 /**
  * Created by root on 11/13/16.
+ * Страница регистрации пользователя.
+ * Регистрирует как преподавателей, так и студентов
  */
 public class SignUpPage extends HttpServlet {
 

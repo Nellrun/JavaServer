@@ -16,6 +16,8 @@ import java.util.HashMap;
 
 /**
  * Created by root on 12/10/16.
+ * Возвращает основную информацию о пользователе по его идентификатору.
+ * Основная информация: имя, фамилия, отчество, пол
  */
 public class UserGetPage extends HttpServlet {
     private final ApplicationContext context;

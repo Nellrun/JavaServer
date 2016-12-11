@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by root on 12/1/16.
+ * Класс осуществляющий доступ к таблице Schedule
  */
 public class ScheduleDAO {
     private DataSource dataSource;

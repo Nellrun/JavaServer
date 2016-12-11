@@ -19,6 +19,8 @@ import java.util.HashMap;
 
 /**
  * Created by root on 11/13/16.
+ * Страница входа в ученую запись, если вход удачный то возвращается token доступа,
+ * который используется для использования методов от имени пользователя
  */
 
 public class SignInPage extends HttpServlet {

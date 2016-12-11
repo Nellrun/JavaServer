@@ -15,6 +15,8 @@ import java.util.HashMap;
 
 /**
  * Created by root on 12/4/16.
+ * Страница для смены пароля для пользователя
+ * На вход принимает старый пароль, новый пароль и token пользователя
  */
 public class ChangePasswordPage extends HttpServlet {
 

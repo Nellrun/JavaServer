@@ -12,6 +12,11 @@ import java.io.IOException;
 
 /**
  * Created by root on 12/10/16.
+ * Страница, которая возвращает информацию о группе:
+ * Короткое имя
+ * Длинное имя
+ * Форма обучения
+ * Степень
  */
 public class GroupGetPage extends HttpServlet {
     private final ApplicationContext context;

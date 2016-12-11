@@ -4,12 +4,21 @@ package tables;
  * Created by root on 12/4/16.
  */
 public class Student {
+    private int id;
     private String firstName;
     private String secondName;
     private String middleName;
     private int groupID;
     private String groupShortName;
     private int levelOfAccess;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;

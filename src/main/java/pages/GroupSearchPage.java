@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * Created by root on 12/4/16.
+ * Страница для поиска группы студентов по их короткому названию
+ *
  */
 public class GroupSearchPage extends HttpServlet {
 

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 /**
  * Created by root on 12/4/16.
+ * Класс для работы с таблицей Subject
  */
 public class SubjectDAO {
     private DataSource dataSource;
