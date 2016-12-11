@@ -1,6 +1,9 @@
 package pages;
 
 import com.google.gson.GsonBuilder;
+import errors.AccessDenidedError;
+import errors.BadParameterFormatError;
+import errors.MissingParameterError;
 import org.springframework.context.ApplicationContext;
 import tables.UserInfoDAO;
 
@@ -31,6 +34,9 @@ public class UserGetPage extends HttpServlet {
         resp.setContentType("text/html;charset=utf-8");
 
         if ((sID == null) && (token == null)) {
+            MissingParameterError missingParameterError = new MissingParameterError("id или token");
+            String out = new GsonBuilder().create().toJson(missingParameterError);
+            resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -43,6 +49,9 @@ public class UserGetPage extends HttpServlet {
                 id = Integer.valueOf(sID);
             }
             catch (Exception e) {
+                BadParameterFormatError bpfe = new BadParameterFormatError("id");
+                String out = new GsonBuilder().create().toJson(bpfe);
+                resp.getWriter().write(out);
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
@@ -57,6 +66,8 @@ public class UserGetPage extends HttpServlet {
 
         if (token != null) {
             if (!sessionToLogin.containsKey(token)) {
+                String out = new GsonBuilder().create().toJson(new AccessDenidedError());
+                resp.getWriter().write(out);
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }

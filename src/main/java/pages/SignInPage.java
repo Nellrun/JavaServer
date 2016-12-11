@@ -1,5 +1,10 @@
 package pages;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import errors.AuthError;
+import errors.MissingParameterError;
+import errors.UserAlreadyExistsError;
 import org.springframework.context.ApplicationContext;
 import tables.User;
 import tables.UserDAO;
@@ -34,6 +39,9 @@ public class SignInPage extends HttpServlet {
         resp.setContentType("text/html;charset=utf-8");
 //
         if ( (login == null) || (password == null) )  {
+            MissingParameterError mpe = new MissingParameterError(login == null ? "login" : "password");
+            String out = new GsonBuilder().create().toJson(mpe);
+            resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -43,6 +51,8 @@ public class SignInPage extends HttpServlet {
         User u = userDAO.getUserByLogin(login);
 
         if ( (u == null) || (!u.getPassword().equals(password)) ) {
+            String out = new GsonBuilder().create().toJson(new AuthError());
+            resp.getWriter().write(out);
             resp.setStatus(401);
             return;
         }

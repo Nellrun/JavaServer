@@ -1,5 +1,9 @@
 package pages;
 
+import com.google.gson.GsonBuilder;
+import errors.AccessDenidedError;
+import errors.BadParameterFormatError;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,15 +26,18 @@ public class LogoutPage extends HttpServlet {
         String token = req.getParameter("token");
 
         if (token == null) {
+            String out = new GsonBuilder().create().toJson(new BadParameterFormatError("token"));
+            resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
         if (!sessionToLogin.containsKey(token)) {
+            String out = new GsonBuilder().create().toJson(new AccessDenidedError());
+            resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
-
 
         sessionToLogin.remove(token);
 

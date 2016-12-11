@@ -1,5 +1,8 @@
 package pages;
 
+import com.google.gson.GsonBuilder;
+import errors.UserAlreadyExistsError;
+import org.eclipse.jetty.io.WriterOutputStream;
 import org.springframework.context.ApplicationContext;
 import tables.*;
 
@@ -8,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Created by root on 11/13/16.
@@ -119,6 +123,7 @@ public class SignUpPage extends HttpServlet {
         try {
             userDAO.create(login, password);
         } catch (Exception e) {
+            String out = new GsonBuilder().create().toJson(new UserAlreadyExistsError());
             resp.setStatus(HttpServletResponse.SC_CONFLICT);
             return;
         }

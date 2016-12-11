@@ -30,7 +30,6 @@ public class UserSearchPage extends HttpServlet{
 
         resp.setContentType("text/html;charset=utf-8");
 
-
         if ( (name == null) || (name.equals("")) || (type == null) ) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;

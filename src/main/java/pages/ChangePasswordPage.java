@@ -1,5 +1,8 @@
 package pages;
 
+import com.google.gson.GsonBuilder;
+import errors.AccessDenidedError;
+import errors.BadParameterFormatError;
 import org.springframework.context.ApplicationContext;
 import tables.UserDAO;
 
@@ -31,11 +34,28 @@ public class ChangePasswordPage extends HttpServlet {
 
         if ( (old_password == null) || (password == null) || (token == null) ||
                 (password.equals("")) || (token.equals("")) ) {
+
+            BadParameterFormatError badParameterFormatError;
+
+            if ( (old_password == null) || old_password.equals("") ) {
+                badParameterFormatError = new BadParameterFormatError("old_password");
+            }
+            else if ( (password == null) || (password.equals("")) ) {
+                badParameterFormatError = new BadParameterFormatError("password");
+            }
+            else {
+                badParameterFormatError = new BadParameterFormatError("token");
+            }
+
+            String out = new GsonBuilder().create().toJson(badParameterFormatError);
+            resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
         if (!sessionToLogin.containsKey(token)) {
+            String out = new GsonBuilder().create().toJson(new AccessDenidedError());
+            resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -44,6 +64,8 @@ public class ChangePasswordPage extends HttpServlet {
 
         UserDAO userDAO = (UserDAO) context.getBean("UserDAO");
         if (!userDAO.getUserByLogin(login).getPassword().equals(old_password)) {
+            String out = new GsonBuilder().create().toJson(new AccessDenidedError());
+            resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
