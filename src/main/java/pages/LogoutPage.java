@@ -25,6 +25,8 @@ public class LogoutPage extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String token = req.getParameter("token");
 
+        resp.setContentType("text/html;charset=utf-8");
+
         if (token == null) {
             String out = new GsonBuilder().create().toJson(new BadParameterFormatError("token"));
             resp.getWriter().write(out);

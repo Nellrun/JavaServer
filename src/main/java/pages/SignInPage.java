@@ -3,6 +3,7 @@ package pages;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import errors.AuthError;
+import errors.BadParameterFormatError;
 import errors.MissingParameterError;
 import errors.UserAlreadyExistsError;
 import org.springframework.context.ApplicationContext;
@@ -46,9 +47,24 @@ public class SignInPage extends HttpServlet {
             return;
         }
 
+        if ( login.equals("") || password.equals("") ) {
+            BadParameterFormatError bpfe = new BadParameterFormatError(login.equals("") ? "login" : "password");
+            String out = new GsonBuilder().create().toJson(bpfe);
+            resp.getWriter().write(out);
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
         UserDAO userDAO = (UserDAO) context.getBean("UserDAO");
 
-        User u = userDAO.getUserByLogin(login);
+        User u = null;
+
+        try {
+            u = userDAO.getUserByLogin(login);
+        }
+        catch (Exception e) {
+
+        }
 
         if ( (u == null) || (!u.getPassword().equals(password)) ) {
             String out = new GsonBuilder().create().toJson(new AuthError());
