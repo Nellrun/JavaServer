@@ -28,6 +28,7 @@ public class GroupGetPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String sID = req.getParameter("id");
+        resp.setContentType("text/html;charset=utf-8");
 
         if (sID == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
