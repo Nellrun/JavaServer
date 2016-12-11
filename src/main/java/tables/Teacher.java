@@ -6,10 +6,10 @@ import com.google.gson.annotations.Expose;
  * Created by root on 12/4/16.
  */
 public class Teacher {
+    private int id;
     private String firstName;
     private String secondName;
     private String middleName;
-    private int id;
     private int DepartamentID;
     private transient int userID;
 

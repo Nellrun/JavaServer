@@ -55,7 +55,7 @@ public class StudentDAO {
         String sql = "Select Student.ID, UserInfo.FirstName, UserInfo.SecondName, UserInfo.MiddleName, " +
                 "Group.NameShort, Student.GroupID, Student.LevelOfAccess " +
                 "From `UserInfo`, `Group`, `Student`" +
-                " Where (Student.ID = ?) and (Student.UserID = UserInfo.ID) and (Student.GroupID = `Group.ID`) ";
+                " Where (`Student`.ID = ?) and (`Student`.UserID = `UserInfo`.ID) and (`Student`.GroupID = `Group`.ID) ";
 
         return this.jdbcTemplate.queryForObject(sql, new Object[] {id}, new StudentRowMapper());
     }
