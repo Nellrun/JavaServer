@@ -25,11 +25,12 @@ public class Main {
         context.addServlet(new ServletHolder(new SignUpPage(jdbcContext)), "/api/user.signup");
         context.addServlet(new ServletHolder(new SignInPage(jdbcContext, sessionToLogin)), "/api/user.signin");
         context.addServlet(new ServletHolder(new ChangePasswordPage(jdbcContext, sessionToLogin)), "/api/user.changePassword");
-        context.addServlet(new ServletHolder(new UserGetPage(jdbcContext, sessionToLogin)), "/api/user.get");
+        context.addServlet(new ServletHolder(new UserChangeNamePage(jdbcContext, sessionToLogin)), "/api/user.changeName");
         context.addServlet(new ServletHolder(new LogoutPage(sessionToLogin)), "/api/user.logout");
 
         context.addServlet(new ServletHolder(new StudentSearchPage(jdbcContext)), "/api/student.search");
         context.addServlet(new ServletHolder(new StudentGetPage(jdbcContext)), "/api/student.get");
+        context.addServlet(new ServletHolder(new StudentChangeGroupPage(jdbcContext, sessionToLogin)), "/api/student.changeGroup");
 
         context.addServlet(new ServletHolder(new TeacherSearchPage(jdbcContext)), "/api/teacher.search");
         context.addServlet(new ServletHolder(new TeacherGetPage(jdbcContext)), "/api/teacher.get");

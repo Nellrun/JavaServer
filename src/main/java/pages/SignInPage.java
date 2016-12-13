@@ -7,8 +7,7 @@ import errors.BadParameterFormatError;
 import errors.MissingParameterError;
 import errors.UserAlreadyExistsError;
 import org.springframework.context.ApplicationContext;
-import tables.User;
-import tables.UserDAO;
+import tables.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +23,36 @@ import java.util.HashMap;
  */
 
 public class SignInPage extends HttpServlet {
+
+    class SignInAns {
+        private int id;
+        private int type;
+        private String token;
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+    }
 
     private final HashMap<String, String> SessionToLogin;
     private final ApplicationContext context;
@@ -77,9 +106,28 @@ public class SignInPage extends HttpServlet {
 
         SessionToLogin.put(req.getSession().getId(), login);
 
-        String ans = "{\"token\": \"" + req.getSession().getId() + "\"}";
+        StudentDAO studentDAO = (StudentDAO) context.getBean("StudentDAO");
+        TeacherDAO teacherDAO = (TeacherDAO) context.getBean("TeacherDAO");
 
-        resp.getWriter().write(ans);
+        SignInAns signInAns = new SignInAns();
+        signInAns.setToken(req.getSession().getId());
+
+        try {
+            Student s = studentDAO.getStudentByLogin(login);
+            signInAns.setId(s.getId());
+            signInAns.setType(0);
+        }
+        catch (Exception e) {
+            Teacher t = teacherDAO.getTeacherByLogin(login);
+            signInAns.setId(t.getId());
+            signInAns.setType(1);
+        }
+
+//        String ans = "{\"token\": \"" + req.getSession().getId() + "\"}";
+
+        String out = new GsonBuilder().create().toJson(signInAns);
+
+        resp.getWriter().write(out);
         resp.setStatus(200);
 
     }

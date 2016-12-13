@@ -41,6 +41,13 @@ public class TeacherDAO {
         return this.jdbcTemplate.queryForObject(sql, new Object[]{id}, new TeacherRowMapper());
     }
 
+    public Teacher getTeacherByLogin(String login) {
+        String sql = "Select Teacher.ID, Teacher.DepartmentID, " +
+                "UserInfo.FirstName, UserInfo.SecondName, UserInfo.MiddleName, Teacher.UserID from `Teacher`, `UserInfo`, `User`" +
+                "Where (`Teacher`.UserID = `UserInfo`.ID) and (`User`.Login = ?) and (`UserInfo`.UserID = `User`.ID)";
+        return this.jdbcTemplate.queryForObject(sql, new Object[]{login}, new TeacherRowMapper());
+    }
+
     public List<Teacher> getTeachersByName(String name) {
         name = "%" + name + "%";
         String sql = "Select Teacher.ID, Teacher.DepartmentID, " +

@@ -5,6 +5,9 @@ import errors.AccessDenidedError;
 import errors.BadParameterFormatError;
 import errors.MissingParameterError;
 import org.springframework.context.ApplicationContext;
+import tables.User;
+import tables.UserDAO;
+import tables.UserInfo;
 import tables.UserInfoDAO;
 
 import javax.servlet.ServletException;
@@ -33,6 +36,8 @@ public class UserGetPage extends HttpServlet {
         String sID = req.getParameter("id");
         String token = req.getParameter("token");
 
+        int id = 0;
+
         resp.setContentType("text/html;charset=utf-8");
 
         if ((sID == null) && (token == null)) {
@@ -45,8 +50,6 @@ public class UserGetPage extends HttpServlet {
 
         if (sID != null) {
 
-            int id = 0;
-
             try {
                 id = Integer.valueOf(sID);
             }
@@ -58,12 +61,6 @@ public class UserGetPage extends HttpServlet {
                 return;
             }
 
-            UserInfoDAO userInfoDAO = (UserInfoDAO) context.getBean("UserInfoDAO");
-            String out = new GsonBuilder().create().toJson(userInfoDAO.getUserInfoByID(id));
-
-            resp.getWriter().write(out);
-            resp.setStatus(HttpServletResponse.SC_OK);
-            return;
         }
 
         if (token != null) {
@@ -76,8 +73,16 @@ public class UserGetPage extends HttpServlet {
 
             String login = sessionToLogin.get(token);
 
-            UserInfoDAO userInfoDAO = (UserInfoDAO) context.getBean("UserInfoDAO");
+            UserDAO userDAO = (UserDAO) context.getBean("UserDAO");
+
+            id = userDAO.getIDByLogin(login);
         }
+
+        UserInfoDAO userInfoDAO = (UserInfoDAO) context.getBean("UserInfoDAO");
+        String out = new GsonBuilder().create().toJson(userInfoDAO.getUserInfoByID(id));
+
+        resp.getWriter().write(out);
+        resp.setStatus(HttpServletResponse.SC_OK);
 
     }
 }

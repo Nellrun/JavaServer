@@ -41,14 +41,14 @@ public class StudentDAO {
         this.jdbcTemplate.update(sql, groupID, levelOfAccess, userID);
     }
 
-    public void updateGroupID(int userID, int groupID) {
-        String sql = "Update Student set GroupID = ? where UserID = ?";
-        this.jdbcTemplate.update(sql, groupID, userID);
+    public void updateGroupID(int studentID, int groupID) {
+        String sql = "Update Student set GroupID = ? where ID = ?";
+        this.jdbcTemplate.update(sql, groupID, studentID);
     }
 
-    public void updateLevelOfAccess(int userID, int levelOfAccess) {
-        String sql = "Update Student set LevelOfAccess = ? where UserID = ?";
-        this.jdbcTemplate.update(sql, levelOfAccess, userID);
+    public void updateLevelOfAccess(int studentID, int levelOfAccess) {
+        String sql = "Update Student set LevelOfAccess = ? where ID = ?";
+        this.jdbcTemplate.update(sql, levelOfAccess, studentID);
     }
 
     public Student getStudentByID(int id) {
@@ -58,6 +58,16 @@ public class StudentDAO {
                 " Where (`Student`.ID = ?) and (`Student`.UserID = `UserInfo`.ID) and (`Student`.GroupID = `Group`.ID) ";
 
         return this.jdbcTemplate.queryForObject(sql, new Object[] {id}, new StudentRowMapper());
+    }
+
+    public Student getStudentByLogin(String login) {
+        String sql = "Select Student.ID, UserInfo.FirstName, UserInfo.SecondName, UserInfo.MiddleName, " +
+                "Group.NameShort, Student.GroupID, Student.LevelOfAccess " +
+                "From `UserInfo`, `Group`, `Student`, `User`" +
+                " Where (`User`.Login = ?) and (`Student`.UserID = `UserInfo`.ID) and (`Student`.GroupID = `Group`.ID) and " +
+                "(UserInfo.UserID = User.ID) ";
+
+        return this.jdbcTemplate.queryForObject(sql, new Object[] {login}, new StudentRowMapper());
     }
 
     public List<Student> getStudentsByName(String name) {

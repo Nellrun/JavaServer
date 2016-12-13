@@ -54,8 +54,8 @@ public class UserInfoDAO {
     }
 
     public void update(int userID, String firstName, String secondName, String middleName) {
-        String sql = "UPDATE `UserInfo` set FirstName = ?, SecondName = ?, MiddleName = ? where UserID = ?) VALUES(?, ?, ?, ?)";
-        this.jdbcTemplate.update(sql, userID, firstName, secondName, middleName);
+        String sql = "UPDATE `UserInfo` set FirstName = ?, SecondName = ?, MiddleName = ? where UserID = ?";
+        this.jdbcTemplate.update(sql, firstName, secondName, middleName, userID);
     }
 
     public void update(int id, int userID) {
