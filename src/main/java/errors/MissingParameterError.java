@@ -3,6 +3,7 @@ package errors;
 /**
  * Created by root on 12/11/16.
  */
+
 public class MissingParameterError extends ParameterError {
 
     public MissingParameterError(String parameterName) {

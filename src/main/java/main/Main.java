@@ -38,6 +38,7 @@ public class Main {
         context.addServlet(new ServletHolder(new GroupSearchPage(jdbcContext)), "/api/group.search");
         context.addServlet(new ServletHolder(new GroupGetPage(jdbcContext)), "/api/group.get");
         context.addServlet(new ServletHolder(new GroupGetMembersPage(jdbcContext)), "/api/group.getMembers");
+        context.addServlet(new ServletHolder(new GroupChangeAccessPage(jdbcContext, sessionToLogin)), "/api/group.changeAccess");
 
         context.addServlet(new ServletHolder(new GetSchedulePage(jdbcContext)), "/api/schedule.get");
 
