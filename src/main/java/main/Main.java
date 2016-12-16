@@ -34,6 +34,7 @@ public class Main {
 
         context.addServlet(new ServletHolder(new TeacherSearchPage(jdbcContext)), "/api/teacher.search");
         context.addServlet(new ServletHolder(new TeacherGetPage(jdbcContext)), "/api/teacher.get");
+        context.addServlet(new ServletHolder(new TeacherGetSubjects(jdbcContext)), "/api/teacher.getSubjects");
 
         context.addServlet(new ServletHolder(new GroupSearchPage(jdbcContext)), "/api/group.search");
         context.addServlet(new ServletHolder(new GroupGetPage(jdbcContext)), "/api/group.get");
