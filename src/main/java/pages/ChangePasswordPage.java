@@ -33,6 +33,8 @@ public class ChangePasswordPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/json;charset=utf-8");
+
         String old_password = req.getParameter("old_password");
         String password = req.getParameter("new_password");
         String token = req.getParameter("token");

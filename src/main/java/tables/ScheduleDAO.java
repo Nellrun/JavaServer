@@ -21,6 +21,7 @@ public class ScheduleDAO {
         public Schedule mapRow(ResultSet resultSet, int i) throws SQLException {
             Schedule schedule = new Schedule();
 
+            schedule.setId(resultSet.getInt("ID"));
             schedule.setSubjectID(resultSet.getInt("SubjectID"));
             schedule.setSubjectName(resultSet.getString("Name"));
             schedule.setType(resultSet.getString("Type"));
@@ -32,6 +33,7 @@ public class ScheduleDAO {
             schedule.setGroupNameShort(resultSet.getString("NameShort"));
             schedule.setnPair(resultSet.getInt("Npair"));
             schedule.setRoom(resultSet.getString("Room"));
+            schedule.setDate(resultSet.getDate("Date"));
 
             return schedule;
 
@@ -42,6 +44,19 @@ public class ScheduleDAO {
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
         this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    public void create(int subjectID, String type, int groupID, int teacherID, int nPair, String room, String date) {
+        String sql = "Insert into " +
+                "Schedule(`SubjectID`, `Type`, `GroupID`, `TeacherID`, `Npair`, `Room`, `Date`) " +
+                "Values(?, ?, ?, ?, ?, ?, ?)";
+
+        this.jdbcTemplate.update(sql, subjectID, type, groupID, teacherID, nPair, room, date);
+    }
+
+    public void deleteByID(int id) {
+        String sql = "Delete From Schedule Where Schedule.ID = ?";
+        this.jdbcTemplate.update(sql, id);
     }
 
     public List<Schedule> getScheduleByGroup(int groupID) {
@@ -72,6 +87,20 @@ public class ScheduleDAO {
 
         return schedules;
     }
+
+    public Schedule getScheduleByGroupIDAndN(int groupID, int n) {
+        String sql = "Select `Schedule`.*, " +
+                "`UserInfo`.FirstName, `UserInfo`.SecondName, `UserInfo`.MiddleName, " +
+                "`Group`.NameShort, " +
+                "`Subject`.Name " +
+                " from `Schedule`, `Teacher`, `Group`, `Subject`, `UserInfo` " +
+                "Where (Schedule.GroupID = ?) and (Schedule.NPair = ?) and " +
+                "(UserInfo.ID = Teacher.UserID) and (Schedule.TeacherID = Teacher.ID) " +
+                "and (Subject.ID = Schedule.SubjectID) and (`Group`.ID = Schedule.GroupID)";
+
+        return this.jdbcTemplate.queryForObject(sql, new Object[] {groupID, n}, new ScheduleRowMapper());
+    }
+
 
 
 }

@@ -42,6 +42,8 @@ public class Main {
         context.addServlet(new ServletHolder(new GroupChangeAccessPage(jdbcContext, sessionToLogin)), "/api/group.changeAccess");
 
         context.addServlet(new ServletHolder(new GetSchedulePage(jdbcContext)), "/api/schedule.get");
+        context.addServlet(new ServletHolder(new ScheduleAddPage(jdbcContext, sessionToLogin)), "/api/schedule.add");
+        context.addServlet(new ServletHolder(new ScheduleDelPage(jdbcContext, sessionToLogin)), "/api/schedule.del");
 
         Server server = new Server(8080);
         server.setHandler(context);

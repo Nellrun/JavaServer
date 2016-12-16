@@ -53,17 +53,17 @@ public class SignInPage extends HttpServlet {
         }
     }
 
-    private final HashMap<String, String> SessionToLogin;
+    private final HashMap<String, String> sessionToLogin;
     private final ApplicationContext context;
 
     public SignInPage(ApplicationContext context, HashMap<String, String> stl) {
-        this.SessionToLogin = stl;
+        this.sessionToLogin = stl;
         this.context = context;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html;charset=utf-8");
+        resp.setContentType("text/json;charset=utf-8");
 
         String login;
         String password;
@@ -100,7 +100,7 @@ public class SignInPage extends HttpServlet {
             return;
         }
 
-        SessionToLogin.put(req.getSession().getId(), login);
+        sessionToLogin.put(req.getSession().getId(), login);
 
         StudentDAO studentDAO = (StudentDAO) context.getBean("StudentDAO");
         TeacherDAO teacherDAO = (TeacherDAO) context.getBean("TeacherDAO");

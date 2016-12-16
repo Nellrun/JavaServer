@@ -19,7 +19,7 @@ public class SubjectDAO {
         public Subject mapRow(ResultSet resultSet, int i) throws SQLException {
             Subject subject = new Subject();
             subject.setId(resultSet.getInt("ID"));
-            subject.setName(resultSet.getString("Name"));
+            subject.setSubjectName(resultSet.getString("Name"));
             return subject;
         }
     }

@@ -5,14 +5,14 @@ package tables;
  */
 public class Subject {
     private int id;
-    private String name;
+    private String subjectName;
 
-    public String getName() {
-        return name;
+    public String getSubjectName() {
+        return subjectName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public int getId() {

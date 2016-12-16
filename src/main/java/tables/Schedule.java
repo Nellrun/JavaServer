@@ -1,9 +1,12 @@
 package tables;
 
+import java.sql.Date;
+
 /**
  * Created by root on 12/1/16.
  */
 public class Schedule {
+    private transient int id;
     private int teacherID;
     private String firstName;
     private String secondName;
@@ -15,6 +18,23 @@ public class Schedule {
     private int nPair;
     private String type;
     private String room;
+    private Date date;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public int getTeacherID() {
         return teacherID;
