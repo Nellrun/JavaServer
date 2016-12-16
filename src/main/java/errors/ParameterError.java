@@ -5,7 +5,7 @@ package errors;
  */
 
 
-abstract class ParameterError extends Error {
+public class ParameterError extends Error {
     protected String parameterName;
 
     public String getParameterName() {

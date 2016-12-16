@@ -3,6 +3,8 @@ package pages;
 import com.google.gson.GsonBuilder;
 import errors.AccessDenidedError;
 import errors.BadParameterFormatError;
+import errors.ParameterError;
+import main.Checker;
 import org.springframework.context.ApplicationContext;
 import tables.UserDAO;
 
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
 /**
@@ -34,22 +37,22 @@ public class ChangePasswordPage extends HttpServlet {
         String password = req.getParameter("new_password");
         String token = req.getParameter("token");
 
-        if ( (old_password == null) || (password == null) || (token == null) ||
-                (password.equals("")) || (token.equals("")) ) {
+        try {
+            old_password = Checker.check(req.getParameter("old_password"), "old_password", 30);
+            password = Checker.check(req.getParameter("new_password"), "new_password", 30);
+            token = Checker.check(req.getParameter("token"), "token");
+        }
+        catch (ParameterError e) {
+            String out = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create().toJson(e);
+            resp.getWriter().write(out);
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
 
-            BadParameterFormatError badParameterFormatError;
-
-            if ( (old_password == null) || old_password.equals("") ) {
-                badParameterFormatError = new BadParameterFormatError("old_password");
-            }
-            else if ( (password == null) || (password.equals("")) ) {
-                badParameterFormatError = new BadParameterFormatError("password");
-            }
-            else {
-                badParameterFormatError = new BadParameterFormatError("token");
-            }
-
-            String out = new GsonBuilder().create().toJson(badParameterFormatError);
+        if (password.equals("")) {
+            String out = new GsonBuilder()
+                    .excludeFieldsWithModifiers(Modifier.PRIVATE)
+                    .create()
+                    .toJson(new BadParameterFormatError("password"));
             resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;

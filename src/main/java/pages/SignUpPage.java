@@ -1,7 +1,11 @@
 package pages;
 
 import com.google.gson.GsonBuilder;
+import errors.AccessDenidedError;
+import errors.BadParameterFormatError;
+import errors.ParameterError;
 import errors.UserAlreadyExistsError;
+import main.Checker;
 import org.eclipse.jetty.io.WriterOutputStream;
 import org.springframework.context.ApplicationContext;
 import tables.*;
@@ -12,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Modifier;
 
 /**
  * Created by root on 11/13/16.
@@ -28,43 +33,46 @@ public class SignUpPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
-        String type = req.getParameter("type");
-
         resp.setContentType("text/html;charset=utf-8");
+        int type;
 
-        if ( (login == null) || (password == null) || (login.equals("")) || (password.equals("")) || (type == null) ) {
+        try {
+            Checker.check(req.getParameter("login"), "login", 30);
+            Checker.check(req.getParameter("password"), "password", 30);
+            type = Checker.toInt(req.getParameter("type"), "type", 0, 1);
+        }
+        catch (ParameterError e) {
+            String out = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create().toJson(e);
+            resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
-        if (type.equals("0")) {
+        if (type == 0) {
             studentAuth(req, resp);
-            return;
         }
-
-        if (type.equals("1")) {
+        else {
             teacherAuth(req, resp);
-            return;
         }
-
-        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     private void teacherAuth(HttpServletRequest req, HttpServletResponse resp) {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
-        String sTeacherID = req.getParameter("id");
-        String secretKey = req.getParameter("secretKey");
-
-        int teacherID = 0;
+        int teacherID;
+        String secretKey;
 
         try {
-            teacherID = Integer.valueOf(sTeacherID);
+            teacherID = Checker.toInt(req.getParameter("id"), "id");
+            secretKey = Checker.check(req.getParameter("secretKey"), "secretKey");
         }
-        catch (Exception e) {
+        catch (ParameterError e) {
+            String out = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create().toJson(e);
+            try {
+                resp.getWriter().write(out);
+            }
+            catch (IOException ne) {}
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -74,6 +82,14 @@ public class SignUpPage extends HttpServlet {
 
         Teacher teacher = teacherDAO.getTeacherByID(teacherID);
         if (!secretKey.equals(departmentDAO.getSecretKeyByDepartmentID(teacher.getDepartamentID()))) {
+            String out = new GsonBuilder()
+                    .excludeFieldsWithModifiers(Modifier.PRIVATE)
+                    .create()
+                    .toJson(new AccessDenidedError());
+            try {
+                resp.getWriter().write(out);
+            }
+            catch (IOException ne) {}
             resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -84,6 +100,14 @@ public class SignUpPage extends HttpServlet {
         try {
             userDAO.create(login, password);
         } catch (Exception e) {
+            String out = new GsonBuilder()
+                    .excludeFieldsWithModifiers(Modifier.PRIVATE)
+                    .create()
+                    .toJson(new UserAlreadyExistsError());
+            try {
+                resp.getWriter().write(out);
+            }
+            catch (IOException ne) {}
             resp.setStatus(HttpServletResponse.SC_CONFLICT);
             return;
         }
@@ -99,7 +123,21 @@ public class SignUpPage extends HttpServlet {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
 
-        String sGroupID = req.getParameter("groupID");
+        int groupID;
+
+        try {
+            groupID = Checker.toInt(req.getParameter("groupID"), "groupID");
+        }
+        catch (ParameterError e) {
+            String out = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create().toJson(e);
+            try {
+                resp.getWriter().write(out);
+            }
+            catch (IOException en) {}
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
         String firstName = req.getParameter("firstName");
         String secondName = req.getParameter("secondName");
         String middleName = req.getParameter("middleName");
@@ -107,16 +145,6 @@ public class SignUpPage extends HttpServlet {
         firstName = firstName == null ? "" : firstName;
         secondName = secondName == null ? "" : secondName;
         middleName = middleName == null ? "" : middleName;
-
-        int groupID = 0;
-
-        try {
-            groupID = Integer.valueOf(sGroupID);
-        }
-        catch (Exception e) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
 
         StudentDAO studentDAO = (StudentDAO) context.getBean("StudentDAO");
         UserDAO userDAO = (UserDAO) context.getBean("UserDAO");
@@ -126,6 +154,10 @@ public class SignUpPage extends HttpServlet {
             userDAO.create(login, password);
         } catch (Exception e) {
             String out = new GsonBuilder().create().toJson(new UserAlreadyExistsError());
+            try {
+                resp.getWriter().write(out);
+            }
+            catch (IOException en) {}
             resp.setStatus(HttpServletResponse.SC_CONFLICT);
             return;
         }

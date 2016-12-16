@@ -3,6 +3,8 @@ package pages;
 import com.google.gson.GsonBuilder;
 import errors.AccessDenidedError;
 import errors.MissingParameterError;
+import errors.ParameterError;
+import main.Checker;
 import org.springframework.context.ApplicationContext;
 import tables.UserDAO;
 import tables.UserInfoDAO;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
 /**
@@ -28,33 +31,25 @@ public class UserChangeNamePage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String token = req.getParameter("token");
-        String firstName = req.getParameter("firstName");
-        String secondName = req.getParameter("secondName");
-        String middleName = req.getParameter("middleName");
-
         resp.setContentType("text/html;charset=utf-8");
 
-        if (token == null || firstName == null || secondName == null || middleName == null) {
-            String out;
+        String token;
+        String firstName;
+        String secondName;
+        String middleName;
 
-            if (token == null) {
-                out = new GsonBuilder().create().toJson(new MissingParameterError("token"));
-            }
-            else if (firstName == null) {
-                out = new GsonBuilder().create().toJson(new MissingParameterError("firstName"));
-            }
-            else if (secondName == null) {
-                out = new GsonBuilder().create().toJson(new MissingParameterError("secondName"));
-            }
-            else {
-                out = new GsonBuilder().create().toJson(new MissingParameterError("middleName"));
-            }
+        try {
+            token =  Checker.check(req.getParameter("token"), "token");
+            firstName = Checker.check(req.getParameter("firstName"), "firstName");
+            secondName = Checker.check(req.getParameter("secondName"), "secondName");
+            middleName = Checker.check(req.getParameter("middleName"), "middleName");
+        }
+        catch (ParameterError e) {
+            String out = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create().toJson(e);
             resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-
 
         if (!sessionToLogin.containsKey(token)) {
             String out = new GsonBuilder().create().toJson(new AccessDenidedError());

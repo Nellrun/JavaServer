@@ -3,12 +3,15 @@ package pages;
 import com.google.gson.GsonBuilder;
 import errors.AccessDenidedError;
 import errors.BadParameterFormatError;
+import errors.ParameterError;
+import main.Checker;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
 /**
@@ -25,12 +28,15 @@ public class LogoutPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String token = req.getParameter("token");
-
         resp.setContentType("text/html;charset=utf-8");
 
-        if (token == null) {
-            String out = new GsonBuilder().create().toJson(new BadParameterFormatError("token"));
+        String token;
+
+        try {
+            token = Checker.check(req.getParameter("token"), "token");
+        }
+        catch (ParameterError e) {
+            String out = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create().toJson(e);
             resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;

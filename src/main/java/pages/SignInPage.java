@@ -2,10 +2,8 @@ package pages;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import errors.AuthError;
-import errors.BadParameterFormatError;
-import errors.MissingParameterError;
-import errors.UserAlreadyExistsError;
+import errors.*;
+import main.Checker;
 import org.springframework.context.ApplicationContext;
 import tables.*;
 
@@ -14,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
 /**
@@ -64,23 +63,17 @@ public class SignInPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
-
         resp.setContentType("text/html;charset=utf-8");
-//
-        if ( (login == null) || (password == null) )  {
-            MissingParameterError mpe = new MissingParameterError(login == null ? "login" : "password");
-            String out = new GsonBuilder().create().toJson(mpe);
-            resp.getWriter().write(out);
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
 
-        if ( login.equals("") || password.equals("") ) {
-            BadParameterFormatError bpfe = new BadParameterFormatError(login.equals("") ? "login" : "password");
-            String out = new GsonBuilder().create().toJson(bpfe);
+        String login;
+        String password;
+
+        try {
+            login = Checker.check(req.getParameter("login"), "login", 30);
+            password = Checker.check(req.getParameter("password"), "password", 30);
+        }
+        catch (ParameterError e) {
+            String out = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create().toJson(e);
             resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
@@ -98,9 +91,12 @@ public class SignInPage extends HttpServlet {
         }
 
         if ( (u == null) || (!u.getPassword().equals(password)) ) {
-            String out = new GsonBuilder().create().toJson(new AuthError());
+            String out = new GsonBuilder()
+                    .excludeFieldsWithModifiers(Modifier.PRIVATE)
+                    .create()
+                    .toJson(new AuthError());
             resp.getWriter().write(out);
-            resp.setStatus(401);
+            resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
@@ -123,12 +119,9 @@ public class SignInPage extends HttpServlet {
             signInAns.setType(1);
         }
 
-//        String ans = "{\"token\": \"" + req.getSession().getId() + "\"}";
-
         String out = new GsonBuilder().create().toJson(signInAns);
 
         resp.getWriter().write(out);
-        resp.setStatus(200);
-
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 }

@@ -3,6 +3,8 @@ package pages;
 import com.google.gson.GsonBuilder;
 import errors.BadParameterFormatError;
 import errors.MissingParameterError;
+import errors.ParameterError;
+import main.Checker;
 import org.springframework.context.ApplicationContext;
 import tables.Teacher;
 import tables.TeacherDAO;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
 /**
@@ -26,21 +29,15 @@ public class TeacherSearchPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-
         resp.setContentType("text/html;charset=utf-8");
 
-        if (name == null) {
-            MissingParameterError missingParameterError = new MissingParameterError("name");
-            String out = new GsonBuilder().create().toJson(missingParameterError);
+        String name;
 
-            resp.getWriter().write(out);
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
+        try {
+            name = Checker.check(req.getParameter("name"), "name");
         }
-
-        if (name.equals("")) {
-            String out = new GsonBuilder().create().toJson(new BadParameterFormatError("name"));
+        catch (ParameterError e) {
+            String out = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create().toJson(e);
             resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;

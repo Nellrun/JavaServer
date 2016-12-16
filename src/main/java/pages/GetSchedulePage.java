@@ -1,6 +1,8 @@
 package pages;
 
 import com.google.gson.GsonBuilder;
+import errors.ParameterError;
+import main.Checker;
 import org.springframework.context.ApplicationContext;
 import tables.Schedule;
 import tables.ScheduleDAO;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 /**
@@ -26,27 +29,25 @@ public class GetSchedulePage extends HttpServlet{
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String sId = req.getParameter("id");
-        String type = req.getParameter("type");
-
         resp.setContentType("text/html;charset=utf-8");
 
-        if ( (sId == null) || (sId.equals("")) || (type == null) ) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
         int id;
+        int type;
+
         try {
-            id = Integer.valueOf(sId);
-        } catch (Exception e) {
+            id = Checker.toInt(req.getParameter("id"), "id");
+            type = Checker.toInt(req.getParameter("type"), "type", 0, 1);
+        }
+        catch (ParameterError e) {
+            String out = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create().toJson(e);
+            resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
         ScheduleDAO scheduleDAO = (ScheduleDAO) context.getBean("ScheduleDAO");
 
-        if (type.equals("0")) {
+        if (type == 0) {
 //            Group
             List<Schedule> scheduleList = scheduleDAO.getScheduleByGroup(id);
             String out = new GsonBuilder().create().toJson(scheduleList);
@@ -55,8 +56,7 @@ public class GetSchedulePage extends HttpServlet{
             resp.getWriter().write(out);
             return;
         }
-
-        if (type.equals("1")) {
+        else {
 //            Teacher
             List<Schedule> scheduleList = scheduleDAO.getScheduleByTeacher(id);
             String out = new GsonBuilder().create().toJson(scheduleList);
@@ -66,9 +66,5 @@ public class GetSchedulePage extends HttpServlet{
             return;
         }
 
-        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        return;
-
-//        super.doGet(req, resp);
     }
 }

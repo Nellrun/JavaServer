@@ -3,6 +3,8 @@ package pages;
 import com.google.gson.GsonBuilder;
 import errors.BadParameterFormatError;
 import errors.MissingParameterError;
+import errors.ParameterError;
+import main.Checker;
 import org.springframework.context.ApplicationContext;
 import tables.Student;
 import tables.StudentDAO;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 /**
@@ -26,28 +29,15 @@ public class GroupGetMembersPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String sID = req.getParameter("id");
-
         resp.setContentType("text/html;charset=utf-8");
 
-        if (sID == null) {
-            MissingParameterError missingParameterError = new MissingParameterError("id");
+        int id;
 
-            String out = new GsonBuilder().create().toJson(missingParameterError);
-            resp.getWriter().write(out);
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
+        try {
+            id = Checker.toInt(req.getParameter("id"), "id");
         }
-
-        int id = 0;
-
-        try{
-            id = Integer.valueOf(sID);
-        }
-        catch (NumberFormatException e) {
-            BadParameterFormatError badParameterFormatError = new BadParameterFormatError("id");
-
-            String out = new GsonBuilder().create().toJson(badParameterFormatError);
+        catch (ParameterError e) {
+            String out = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create().toJson(e);
             resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;

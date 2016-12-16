@@ -4,6 +4,8 @@ import com.google.gson.GsonBuilder;
 import errors.AccessDenidedError;
 import errors.BadParameterFormatError;
 import errors.MissingParameterError;
+import errors.ParameterError;
+import main.Checker;
 import org.springframework.context.ApplicationContext;
 import tables.Student;
 import tables.StudentDAO;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
 /**
@@ -29,32 +32,17 @@ public class StudentChangeGroupPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String sID = req.getParameter("id");
-        String token = req.getParameter("token");
-
         resp.setContentType("text/html;charset=utf-8");
 
-        if (token == null || sID == null) {
-            String out;
-            if (token == null) {
-                out = new GsonBuilder().create().toJson(new MissingParameterError("token"));
-            }
-            else {
-                out = new GsonBuilder().create().toJson(new MissingParameterError("id"));
-            }
-
-            resp.getWriter().write(out);
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
-
-        int id = 0;
+        int id;
+        String token;
 
         try {
-            id = Integer.valueOf(sID);
+            id = Checker.toInt(req.getParameter("id"), "id");
+            token = Checker.check(req.getParameter("token"), "token");
         }
-        catch (NumberFormatException e) {
-            String out = new GsonBuilder().create().toJson(new BadParameterFormatError("id"));
+        catch (ParameterError e) {
+            String out = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create().toJson(e);
             resp.getWriter().write(out);
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;

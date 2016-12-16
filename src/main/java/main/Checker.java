@@ -7,9 +7,25 @@ import errors.MissingParameterError;
  * Created by root on 12/15/16.
  */
 public class Checker {
-    public static String check(String arg, String argName) throws MissingParameterError {
+    public static String check(String arg, String argName) throws MissingParameterError, BadParameterFormatError {
         if (arg == null) {
             throw new MissingParameterError(argName);
+        }
+        if (arg.equals("")) {
+            throw new BadParameterFormatError(argName);
+        }
+        return arg;
+    }
+
+    public static String check(String arg, String argName, int length) throws MissingParameterError, BadParameterFormatError {
+        if (arg == null) {
+            throw new MissingParameterError(argName);
+        }
+        if (arg.equals("")) {
+            throw new BadParameterFormatError(argName);
+        }
+        if (arg.length() > length) {
+            throw new BadParameterFormatError(argName);
         }
         return arg;
     }
