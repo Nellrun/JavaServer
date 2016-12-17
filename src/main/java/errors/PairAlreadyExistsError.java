@@ -7,7 +7,7 @@ public class PairAlreadyExistsError extends Error {
 
     public PairAlreadyExistsError() {
         this.errorCode = 6;
-        this.errorName = "Пара уже стоит";
+        this.errorName = "Пара уже существует";
         this.errorText = "Ошибка. У данной группы в этой время уже есть пара";
     }
 }
