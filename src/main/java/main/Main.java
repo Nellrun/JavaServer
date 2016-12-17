@@ -36,6 +36,8 @@ public class Main {
         context.addServlet(new ServletHolder(new TeacherGetPage(jdbcContext)), "/api/teacher.get");
         context.addServlet(new ServletHolder(new TeacherGetSubjects(jdbcContext)), "/api/teacher.getSubjects");
 
+        context.addServlet(new ServletHolder(new StudentChangeGroupPage(jdbcContext, sessionToLogin)), "/api/department.changeSecretKey");
+
         context.addServlet(new ServletHolder(new GroupSearchPage(jdbcContext)), "/api/group.search");
         context.addServlet(new ServletHolder(new GroupGetPage(jdbcContext)), "/api/group.get");
         context.addServlet(new ServletHolder(new GroupGetMembersPage(jdbcContext)), "/api/group.getMembers");

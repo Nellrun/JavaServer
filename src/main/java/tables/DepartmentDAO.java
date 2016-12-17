@@ -28,4 +28,10 @@ public class DepartmentDAO {
             }
         });
     }
+
+    public void setSecretKey(int id, String secretKey) {
+        String sql = "UPDATE `Department` set SecretKey = ? where ID = ?";
+
+        this.jdbcTemplate.update(sql, secretKey, id);
+    }
 }

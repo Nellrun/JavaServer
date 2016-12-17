@@ -24,7 +24,7 @@ import java.util.*;
 public class ScheduleAddPage extends HttpServlet {
     private final HashMap<String, String> sessionToLogin;
     private final ApplicationContext context;
-    private String[] types = {"Лекция", "Практика", "Лабораторная"};
+    private String[] types = {"Лекция", "Практика", "Лабораторная работа"};
 
     public ScheduleAddPage(ApplicationContext context, HashMap<String, String> stl) {
         this.sessionToLogin = stl;
