@@ -3,7 +3,6 @@ package pages;
 import com.google.gson.GsonBuilder;
 import errors.AccessDenidedError;
 import errors.BadParameterFormatError;
-import errors.PairDoesntExitsts;
 import errors.ParameterError;
 import main.Checker;
 import org.springframework.context.ApplicationContext;
@@ -19,34 +18,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.List;
 
 /**
- * Created by root on 12/16/16.
+ * Created by root on 12/17/16.
  */
-public class ScheduleDelPage extends HttpServlet {
+public class ScheduleAddGroupPage extends HttpServlet {
     private final HashMap<String, String> sessionToLogin;
     private final ApplicationContext context;
 
-    public ScheduleDelPage(ApplicationContext context, HashMap<String, String> stl) {
+    public ScheduleAddGroupPage(ApplicationContext context, HashMap<String, String> stl) {
         this.sessionToLogin = stl;
         this.context = context;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/json;charset=utf-8");
-
         String token;
         int id;
+        int groupID;
 
         try {
             token = Checker.check(req.getParameter("token"), "token");
             id = Checker.toInt(req.getParameter("id"), "id");
+            groupID = Checker.toInt(req.getParameter("groupID"), "groupID");
         }
         catch (ParameterError e) {
             String out = new GsonBuilder().excludeFieldsWithModifiers(Modifier.PRIVATE).create().toJson(e);
@@ -110,7 +105,6 @@ public class ScheduleDelPage extends HttpServlet {
             return;
         }
 
-        scheduleDAO.deleteByID(id);
-
+        scheduleDAO.addGroup(id, groupID);
     }
 }

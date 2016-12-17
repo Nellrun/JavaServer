@@ -29,8 +29,6 @@ public class ScheduleDAO {
             schedule.setFirstName(resultSet.getString("FirstName"));
             schedule.setSecondName(resultSet.getString("SecondName"));
             schedule.setMiddleName(resultSet.getString("MiddleName"));
-//            schedule.setGroupID(resultSet.getInt("GroupID"));
-//            schedule.setGroupNameShort(resultSet.getString("NameShort"));
             schedule.setnPair(resultSet.getInt("Npair"));
             schedule.setRoom(resultSet.getString("Room"));
             schedule.setDate(resultSet.getDate("Date"));
@@ -48,10 +46,31 @@ public class ScheduleDAO {
 
     public void create(int subjectID, String type, int groupID, int teacherID, int nPair, String room, String date) {
         String sql = "Insert into " +
-                "Schedule(`SubjectID`, `Type`, `GroupID`, `TeacherID`, `Npair`, `Room`, `Date`) " +
-                "Values(?, ?, ?, ?, ?, ?, ?)";
+                "Schedule(`SubjectID`, `Type`, `TeacherID`, `Npair`, `Room`, `Date`) " +
+                "Values(?, ?, ?, ?, ?, ?)";
 
-        this.jdbcTemplate.update(sql, subjectID, type, groupID, teacherID, nPair, room, date);
+        this.jdbcTemplate.update(sql, subjectID, type, teacherID, nPair, room, date);
+
+        sql = "SELECT ID from Schedule ORDER BY ID DESC LIMIT 1";
+
+        int lastID = this.jdbcTemplate.queryForObject(sql, new RowMapper<Integer>() {
+            public Integer mapRow(ResultSet resultSet, int i) throws SQLException {
+                return resultSet.getInt("ID");
+            }
+        });
+
+        this.addGroup(lastID, groupID);
+    }
+
+    public void addGroup(int scheduleID, int groupID) {
+        String sql = "Insert into ScheduleToGroup(ScheduleID, GroupID) values (?, ?)";
+
+        this.jdbcTemplate.update(sql, scheduleID, groupID);
+    }
+
+    public void delGroup(int scheduleID, int groupID) {
+        String sql = "Delete from ScheduleToGroup where ScheduleID = ? and GroupId = ?";
+        this.jdbcTemplate.update(sql, scheduleID, groupID);
     }
 
     public void deleteByID(int id) {
@@ -107,18 +126,28 @@ public class ScheduleDAO {
         return schedules;
     }
 
-    public Schedule getScheduleByGroupIDAndN(int groupID, int n) {
+    public Schedule getScheduleByID(int id) {
         String sql = "Select `Schedule`.*, " +
                 "`UserInfo`.FirstName, `UserInfo`.SecondName, `UserInfo`.MiddleName, " +
-                "`Group`.NameShort, " +
                 "`Subject`.Name " +
-                " from `Schedule`, `Teacher`, `Group`, `Subject`, `UserInfo` " +
-                "Where (Schedule.GroupID = ?) and (Schedule.NPair = ?) and " +
-                "(UserInfo.ID = Teacher.UserID) and (Schedule.TeacherID = Teacher.ID) " +
+                " from `Schedule`, `Teacher`, `Subject`, `UserInfo` " +
+                "Where (Schedule.ID = ?) and (UserInfo.ID = Teacher.UserID) and (Schedule.TeacherID = Teacher.ID) " +
                 "and (Subject.ID = Schedule.SubjectID)";
 
-        return this.jdbcTemplate.queryForObject(sql, new Object[] {groupID, n}, new ScheduleRowMapper());
+        return this.jdbcTemplate.queryForObject(sql, new Object[] {id}, new ScheduleRowMapper());
     }
+
+    public Schedule getScheduleByTeacherIDAndN(int teacherID, int n) {
+        String sql = "Select `Schedule`.*, " +
+                "`UserInfo`.FirstName, `UserInfo`.SecondName, `UserInfo`.MiddleName, " +
+                "`Subject`.Name " +
+                " from `Schedule`, `Teacher`, `Subject`, `UserInfo` " +
+                "Where (Schedule.TeacherID = ?) and (UserInfo.ID = Teacher.UserID) and (Schedule.TeacherID = Teacher.ID) " +
+                "and (Subject.ID = Schedule.SubjectID) and (Schedule.Npair = ?)";
+
+        return this.jdbcTemplate.queryForObject(sql, new Object[] {teacherID, n}, new ScheduleRowMapper());
+    }
+
 
 
 

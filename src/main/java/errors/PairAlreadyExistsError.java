@@ -8,6 +8,6 @@ public class PairAlreadyExistsError extends Error {
     public PairAlreadyExistsError() {
         this.errorCode = 6;
         this.errorName = "Пара уже существует";
-        this.errorText = "Ошибка. У данной группы в этой время уже есть пара";
+        this.errorText = "Ошибка. У данного преподавателя в это время уже есть пара";
     }
 }

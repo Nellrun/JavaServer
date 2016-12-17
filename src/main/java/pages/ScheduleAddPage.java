@@ -144,20 +144,13 @@ public class ScheduleAddPage extends HttpServlet {
 
         ScheduleDAO scheduleDAO = (ScheduleDAO) context.getBean("ScheduleDAO");
 
-        Schedule pair = null;
-
         String date = String.valueOf(year) + "-" + String.valueOf(month) + "-" + String.valueOf(day);
 
         try{
-            pair = scheduleDAO.getScheduleByGroupIDAndN(groupID, nPair);
+            scheduleDAO.getScheduleByTeacherIDAndN(teacher.getId(), nPair);
         }
         catch (EmptyResultDataAccessException e) {
-            scheduleDAO.create(subjectID, this.types[type], groupID, teacher.getId(), n, room, date);
-            return;
-        }
-
-        if (pair.getRoom() == room) {
-            scheduleDAO.create(subjectID, this.types[type], groupID, teacher.getId(), n, room, date);
+            scheduleDAO.create(subjectID, this.types[type], groupID, teacher.getId(), nPair, room, date);
             return;
         }
 
