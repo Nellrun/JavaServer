@@ -1,24 +1,24 @@
 package tables;
 
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Created by root on 12/1/16.
  */
 public class Schedule {
-    private transient int id;
+    private int id;
     private int teacherID;
     private String firstName;
     private String secondName;
     private String middleName;
-    private int groupID;
-    private String groupNameShort;
     private int subjectID;
     private String subjectName;
     private int nPair;
     private String type;
     private String room;
     private Date date;
+    private List<Group> groups;
 
     public int getId() {
         return id;
@@ -68,20 +68,12 @@ public class Schedule {
         this.middleName = middleName;
     }
 
-    public int getGroupID() {
-        return groupID;
+    public List<Group> getGroups() {
+        return groups;
     }
 
-    public void setGroupID(int groupID) {
-        this.groupID = groupID;
-    }
-
-    public String getGroupNameShort() {
-        return groupNameShort;
-    }
-
-    public void setGroupNameShort(String groupNameShort) {
-        this.groupNameShort = groupNameShort;
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
     }
 
     public int getSubjectID() {

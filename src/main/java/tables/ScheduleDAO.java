@@ -29,8 +29,8 @@ public class ScheduleDAO {
             schedule.setFirstName(resultSet.getString("FirstName"));
             schedule.setSecondName(resultSet.getString("SecondName"));
             schedule.setMiddleName(resultSet.getString("MiddleName"));
-            schedule.setGroupID(resultSet.getInt("GroupID"));
-            schedule.setGroupNameShort(resultSet.getString("NameShort"));
+//            schedule.setGroupID(resultSet.getInt("GroupID"));
+//            schedule.setGroupNameShort(resultSet.getString("NameShort"));
             schedule.setnPair(resultSet.getInt("Npair"));
             schedule.setRoom(resultSet.getString("Room"));
             schedule.setDate(resultSet.getDate("Date"));
@@ -59,14 +59,30 @@ public class ScheduleDAO {
         this.jdbcTemplate.update(sql, id);
     }
 
+    private List<Group> getGroupsByScheduleID(int scheduleID) {
+        String sql = "Select `Group`.* from `Group`, ScheduleToGroup " +
+                "where ScheduleToGroup.scheduleID = ? and `Group`.ID = ScheduleToGroup.GroupID";
+
+        return this.jdbcTemplate.query(sql, new Object[]{scheduleID}, new RowMapper<Group>() {
+            public Group mapRow(ResultSet resultSet, int i) throws SQLException {
+                Group group = new Group();
+                group.setId(resultSet.getInt("ID"));
+                group.setNameLong(resultSet.getString("NameLong"));
+                group.setNameShort(resultSet.getString("NameShort"));
+                group.setDegree(resultSet.getString("Degree"));
+                group.setFormOfEducation(resultSet.getString("FormOfEducation"));
+                return group;
+            }
+        });
+    }
+
     public List<Schedule> getScheduleByGroup(int groupID) {
         String sql = "Select `Schedule`.*, " +
                 "`UserInfo`.FirstName, `UserInfo`.SecondName, `UserInfo`.MiddleName, " +
-                "`Group`.NameShort, " +
                 "`Subject`.Name " +
-                " from `Schedule`, `Teacher`, `Group`, `Subject`, `UserInfo` " +
-                "Where (Schedule.GroupID = ?) and (Schedule.GroupID = `Group`.ID) and " +
-                "(UserInfo.ID = Teacher.UserID) and " +
+                " from `Schedule`, `Teacher`, `ScheduleToGroup`, `Subject`, `UserInfo` " +
+                "Where (ScheduleToGroup.GroupID = ?) and " +
+                "(UserInfo.ID = Teacher.UserID) and (ScheduleToGroup.ScheduleID = Schedule.ID) and " +
                 "(Schedule.TeacherID = Teacher.ID) and (Subject.ID = Schedule.SubjectID)";
 
         List<Schedule> schedules = this.jdbcTemplate.query(sql, new Object[] {groupID}, new ScheduleRowMapper());
@@ -77,13 +93,16 @@ public class ScheduleDAO {
     public List<Schedule> getScheduleByTeacher(int teacherID) {
         String sql = "Select `Schedule`.*, " +
                 "`UserInfo`.FirstName, `UserInfo`.SecondName, `UserInfo`.MiddleName, " +
-                "`Group`.NameShort, " +
                 "`Subject`.Name " +
-                " from `Schedule`, `Teacher`, `Group`, `Subject`, `UserInfo` " +
+                " from `Schedule`, `Teacher`, `Subject`, `UserInfo` " +
                 "Where (Schedule.TeacherID = ?) and (UserInfo.ID = Teacher.UserID) and (Schedule.TeacherID = Teacher.ID) " +
-                "and (Subject.ID = Schedule.SubjectID) and (`Group`.ID = Schedule.GroupID)";
+                "and (Subject.ID = Schedule.SubjectID)";
 
         List<Schedule> schedules = this.jdbcTemplate.query(sql, new Object[] {teacherID}, new ScheduleRowMapper());
+
+        for (Schedule s: schedules) {
+            s.setGroups(this.getGroupsByScheduleID(s.getId()));
+        }
 
         return schedules;
     }
@@ -96,7 +115,7 @@ public class ScheduleDAO {
                 " from `Schedule`, `Teacher`, `Group`, `Subject`, `UserInfo` " +
                 "Where (Schedule.GroupID = ?) and (Schedule.NPair = ?) and " +
                 "(UserInfo.ID = Teacher.UserID) and (Schedule.TeacherID = Teacher.ID) " +
-                "and (Subject.ID = Schedule.SubjectID) and (`Group`.ID = Schedule.GroupID)";
+                "and (Subject.ID = Schedule.SubjectID)";
 
         return this.jdbcTemplate.queryForObject(sql, new Object[] {groupID, n}, new ScheduleRowMapper());
     }

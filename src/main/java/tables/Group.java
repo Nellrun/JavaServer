@@ -10,8 +10,6 @@ public class Group {
     private String nameLong;
     private String degree;
     private String formOfEducation;
-    private int streamID;
-    private int stewardID;
 
     public String getNameShort() {
         return nameShort;
@@ -43,22 +41,6 @@ public class Group {
 
     public void setFormOfEducation(String formOfEducation) {
         this.formOfEducation = formOfEducation;
-    }
-
-    public int getStreamID() {
-        return streamID;
-    }
-
-    public void setStreamID(int streamID) {
-        this.streamID = streamID;
-    }
-
-    public int getStewardID() {
-        return stewardID;
-    }
-
-    public void setStewardID(int stewardID) {
-        this.stewardID = stewardID;
     }
 
     public int getId() {

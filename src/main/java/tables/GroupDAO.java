@@ -13,9 +13,8 @@ import java.util.List;
  * Created by root on 12/1/16.
  * Класс, осуществляющий доступ к таблице группы
  */
+
 public class GroupDAO {
-    private DataSource dataSource;
-    private JdbcTemplate jdbcTemplate;
 
     class GroupMapper implements RowMapper<Group> {
         public Group mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -25,10 +24,12 @@ public class GroupDAO {
             group.setNameShort(resultSet.getString("NameShort"));
             group.setDegree(resultSet.getString("Degree"));
             group.setFormOfEducation(resultSet.getString("FormOfEducation"));
-            group.setStreamID(resultSet.getInt("StreamID"));
             return group;
         }
     }
+
+    private DataSource dataSource;
+    private JdbcTemplate jdbcTemplate;
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
