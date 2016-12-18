@@ -1,4 +1,4 @@
-# Метод: announcement.del<a name="announcement.del"/>
+# Метод: announcement.del<a name="announcement.del"></a>
 
 Данный метод позволяет удалить сообщение пользователя
 - Сообщение может удалить пользователь, который его создал

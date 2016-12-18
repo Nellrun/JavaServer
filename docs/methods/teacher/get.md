@@ -1,4 +1,4 @@
-# Метод: teacher.get<a name="teacher.get"/>
+# Метод: teacher.get<a name="teacher.get"></a>
 
 Данный метод обеспечивает получение данных о заданном преподавателе.
 

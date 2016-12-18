@@ -1,4 +1,4 @@
-# Метод: student.get<a name="student.get"/>
+# Метод: student.get<a name="student.get"></a>
 
 Данный метод обеспечивает получение данных о заданном студенте.
 

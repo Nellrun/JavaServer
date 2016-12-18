@@ -1,4 +1,4 @@
-# Метод: schedule.delGroup<a name="schedule.delGroup"/>
+# Метод: schedule.delGroup<a name="schedule.delGroup"></a>
 
 Данный метод позволяет преподавателю убирать учебным группам пары.
 - Возможно убирать только те пары, которые ведет сам преподаватель

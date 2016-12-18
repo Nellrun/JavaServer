@@ -1,4 +1,4 @@
-# Метод: schedule.get<a name="schedule.get"/>
+# Метод: schedule.get<a name="schedule.get"></a>
 
 Возвращает расписание заданной группы или преподавателя.
 

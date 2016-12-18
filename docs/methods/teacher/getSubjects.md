@@ -1,4 +1,4 @@
-# Метод: teacher.getSubjects<a name="teacher.getSubjects"/>
+# Метод: teacher.getSubjects<a name="teacher.getSubjects"></a>
 
 Данный метод позволяет получить список дисциплин, которые преподает заданный преподаватель
 

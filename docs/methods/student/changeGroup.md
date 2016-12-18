@@ -1,4 +1,4 @@
-# Метод: student.changeGroup<a name="student.changeGroup"/>
+# Метод: student.changeGroup<a name="student.changeGroup"></a>
 
 Данный метод позволяет студенту изменить свою учебную группу.
 

@@ -1,4 +1,3 @@
-
 # Введение
 
 Сервер Mobile VyatSU реализует интерфейс API
@@ -11,7 +10,8 @@ API Mobile VyatSU — это интерфейс, который позволяе
 ```
 http://127.0.0.1:8080/api/student.get?id=1
 ```
-
+
+<div class="page-break"></div>
 # Запросы к API
 
 Чтобы обратиться к методу API, Вам необходимо выполнить GET запрос такого вида:
@@ -56,7 +56,8 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
 ```
 
 Структура ответа каждого метода также строго задана, и при работе с API Вы заранее знаете, что в поле id придет число, а в поле firstName — строка. Такие правила оговариваются на страницах с описанием метода и соответствующих объектов, которые он возвращает в ответе.
-
+
+<div class="page-break"></div>
 # Основные структуры
 В данном разделе представленно описание основных структур:
 - Student
@@ -93,7 +94,8 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
 1  | Только чтение  |  Возможно только читать сообщения, прикрепленные к парам
 2  | Студент  | Возможно писать и читать сообщения, повышать до 1-го уровня привелегий
 3  | Староста  | Возможно писать и читать сообщения, повышать до 2-го уровня привелегий
-
+
+<div class="page-break"></div>
 ## Teacher
 Данная структура описывает пользователя, который является преподавателем.
 
@@ -112,7 +114,8 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
 **secondName**  |  Строка |  Фамилия студента
 **middleName**  | Строка  |  Отчество студента
 **departmentID**  | Число  |  Уникальный идентификатор кафедры
-
+
+<div class="page-break"></div>
 ## Group
 Данная структура описывает учебную группу. В учебной группе могут состоять только студенты
 
@@ -125,7 +128,8 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
 | **nameLong**  |  Строка   | Длинное имя группы
 | **degree**   |  Строка  | Ученая степень группы (*Бакалавр*, *Специалитет*, *Магистратура*, *Аспирантура*)
 | **formOfEducation** | Строка | Форма обучения группы (*Очная*, *Заочная*, *Дистанционная*)
-
+
+<div class="page-break"></div>
 ## Schedule
 Данная структура описывает учебное занятие. У учебного занятия может быть только один преподаватель, но несколько групп.
 
@@ -153,7 +157,8 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
 | **0**  |  Лекция |
 | **1**  |  Практика |
 | **2**  | Лабораторная работа|
-
+
+<div class="page-break"></div>
 ## Announcement
 Данная структура описывает сообщение прикрепленное к учебной паре
 
@@ -169,7 +174,8 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
 | **text** | Строка | Сообщение
 | **announceTime** | Строка | Время написания сообщения
 | **pairDate** | Строка | День проведения учебной пары
-
+
+<div class="page-break"></div>
 # Коды состояния
 
 В зависимости от результатов обработки запроса будут возвращены различные коды состояния.
@@ -181,11 +187,13 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
 **400**  | Неверный запрос  | Неверный формат параметра<br> Параметр не был передан
 **403** | Доступ запрещен | Неверный логин или пароль<br> Доступ запрещен
 **409** | Конфликт | Пара уже существует <br> Пользователь уже сущесвует
-
+
+<div class="page-break"></div>
 # Ошибки
 В данном разделе описываются ошибки, которые возникают во время вызова метода
-
-# Ошибка: Доступ запрещен <a name="AccessDenidedError"/>
+
+<div class="page-break"></div>
+# Ошибка: Доступ запрещен <a name="AccessDenidedError"></a>
 Данная ошибка случается при передаче неправильного ключа доступа пользователя,
 либо при попытке обратиться к методу, который недоступен для данного пользователя
 
@@ -207,8 +215,9 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
   "errorText": "Доступ запрещен"
 }
 ```
-
-# Ошибка: Ошибка аутентификации <a name="AuthError"/>
+
+<div class="page-break"></div>
+# Ошибка: Ошибка аутентификации <a name="AuthError"></a>
 Данная ошибка случается при передаче в метод [user.signin](#user.signin) неправильного логина или пароля
 
 ## Параметры
@@ -229,8 +238,9 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
   "errorText": "Неверно заданы параметры логин или пароль"
 }
 ```
-
-# Ошибка: Неправильный формат <a name="BadParameterFormatError"/>
+
+<div class="page-break"></div>
+# Ошибка: Неправильный формат <a name="BadParameterFormatError"></a>
 Данная ошибка сообщает о неправильном формате одного из переданных параметров
 
 ## Параметры
@@ -253,8 +263,9 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
   "errorText": "Ошибка. Неверный формат параметра login"
 }
 ```
-
-# Ошибка: Отсутсвует параметр <a name="MissingParameterError"/>
+
+<div class="page-break"></div>
+# Ошибка: Отсутсвует параметр <a name="MissingParameterError"></a>
 Данная ошибка сообщает об отсуствии обязательного параметра при совершении запроса к методу
 
 ## Параметры
@@ -277,8 +288,9 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
   "errorText": "Отсуствует обязательный параметр password"
 }
 ```
-
-# Ошибка: Пара уже существует <a name="PairAlreadyExists"/>
+
+<div class="page-break"></div>
+# Ошибка: Пара уже существует <a name="PairAlreadyExists"></a>
 Данная ошибка возникает при использовании метода [schedule.add](#schedule.add), если в данное время у преподавателя есть учебная пара
 
 ## Параметры
@@ -299,8 +311,9 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
   "errorText": "Ошибка. У данного преподавателя в это время уже есть пара"
 }
 ```
-
-# Ошибка: Пара отсуствует <a name="PairAlreadyExists"/>
+
+<div class="page-break"></div>
+# Ошибка: Пара отсуствует <a name="PairAlreadyExists"></a>
 Данная ошибка возникает при использовании метода [schedule.del](#schedule.del), если в данное время у заданной учебной группы нет учебной пары
 
 ## Параметры
@@ -321,8 +334,9 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
   "errorText": "Ошибка. У данной группы в этой время нет пары"
 }
 ```
-
-# Ошибка: Пользователь уже существует <a name="UserAlreadyExistsError"/>
+
+<div class="page-break"></div>
+# Ошибка: Пользователь уже существует <a name="UserAlreadyExistsError"></a>
 Данная ошибка возникает при использовании метода [user.signup](#user.signup), если данный пользователь уже существует в системе
 
 ## Параметры
@@ -343,11 +357,13 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
   "errorText": "Ошибка. Данный пользователь уже сущесвует"
 }
 ```
-
+
+<div class="page-break"></div>
 # Методы
 В данном разделе описываются методы, их параметры и возвращаемые значения
-
-# Метод: announcement.add<a name="announcement.add"/>
+
+<div class="page-break"></div>
+# Метод: announcement.add<a name="announcement.add"></a>
 
 Данный метод позволяет прикрепить сообщение к учебной паре
 - Сообщения может прикрепить только преподаватель или студент, который имеет уровень привелегий выше 1
@@ -388,8 +404,9 @@ http://127.0.0.1:8080/api/<Method name>?<Parameters>
 ```
 statuscode: 200
 ```
-
-# Метод: announcement.del<a name="announcement.del"/>
+
+<div class="page-break"></div>
+# Метод: announcement.del<a name="announcement.del"></a>
 
 Данный метод позволяет удалить сообщение пользователя
 - Сообщение может удалить пользователь, который его создал
@@ -421,8 +438,9 @@ statuscode: 200
 ```
 statuscode: 200
 ```
-
-# Метод: announcement.get<a name="announcement.get"/>
+
+<div class="page-break"></div>
+# Метод: announcement.get<a name="announcement.get"></a>
 
 Данный метод позволяет получить последние сообщения, прикрепленные к учебной паре.
 - Сообщения может получить только преподаватель или студент, который имеет уровень привелегий выше 0
@@ -475,8 +493,9 @@ statuscode: 200
   }
 ]
 ```
-
-# Метод: deparment.changeSecretKey<a name="deparment.changeSecretKey"/>
+
+<div class="page-break"></div>
+# Метод: deparment.changeSecretKey<a name="deparment.changeSecretKey"></a>
 
 Данный метод позволяет изменить **любому** преподавателю секретный ключ своей кафедры.
 Данный метод доступен только для авторизованных преподавателей
@@ -506,8 +525,9 @@ statuscode: 200
 ```
 statuscode: 200
 ```
-
-# Метод: group.changeAccess<a name="group.changeAccess"/>
+
+<div class="page-break"></div>
+# Метод: group.changeAccess<a name="group.changeAccess"></a>
 
 Данный метод позволяет изменить права студента внутри группы.
 Права студента может изменять **любой** преподаватель. Права студента так же может изменить и студент, если он состоит в этой же группе и его права выше.
@@ -541,8 +561,9 @@ statuscode: 200
 ```
 statuscode: 200
 ```
-
-# Метод: group.get<a name="group.get"/>
+
+<div class="page-break"></div>
+# Метод: group.get<a name="group.get"></a>
 
 Данный метод позволяет получить информации о заданной группе.
 Возвращает информацию о группе с заданным **id**
@@ -585,8 +606,9 @@ statuscode: 200
   "formOfEducation": "Очная"
 }
 ```
-
-# Метод: group.getMembers<a name="group.getMembers"/>
+
+<div class="page-break"></div>
+# Метод: group.getMembers<a name="group.getMembers"></a>
 
 Данный метод возвращает список студентов, которые обучаются в заданной учебной группы.
 Возвращает информацию о студентах обучающихся в группе с заданным **id**
@@ -653,8 +675,9 @@ statuscode: 200
   }
 ]
 ```
-
-# Метод: group.search<a name="group.search"/>
+
+<div class="page-break"></div>
+# Метод: group.search<a name="group.search"></a>
 
 Данный метод возвращает список групп, которые соотвествуют поисковому запросу.
 Возвращает информацию о группах, которые имеют короткое имя как в параметре **name**
@@ -706,8 +729,9 @@ statuscode: 200
   }
 ]
 ```
-
-# Метод: schedule.add<a name="schedule.add"/>
+
+<div class="page-break"></div>
+# Метод: schedule.add<a name="schedule.add"></a>
 
 Данный метод позволяет преподавателю добавлять учебные пары в расписание.
 - Добавленные пары добавляются только для преподавателя, который вызвал данный метод, иначе говоря, добавить пару для другого преподавателя **нельзя**
@@ -803,8 +827,9 @@ statuscode: 200
   "date": "2016-12-17"
 }
 ```
-
-# Метод: schedule.addGroup<a name="schedule.addGroup"/>
+
+<div class="page-break"></div>
+# Метод: schedule.addGroup<a name="schedule.addGroup"></a>
 
 Данный метод позволяет преподавателю добавлять учебным группам пары.
 - Пары могут добавляться группам, у которых в данное время стоит другая пара
@@ -838,8 +863,9 @@ statuscode: 200
 ```
 statuscode: 200
 ```
-
-# Метод: schedule.del<a name="schedule.del"/>
+
+<div class="page-break"></div>
+# Метод: schedule.del<a name="schedule.del"></a>
 
 Данный метод позволяет преподавателю убирать учебные пары из расписания.
 - Пары могут быть убраны преподавателем только из своего расписания
@@ -873,8 +899,9 @@ statuscode: 200
 ```
 statuscode: 200
 ```
-
-# Метод: schedule.delGroup<a name="schedule.delGroup"/>
+
+<div class="page-break"></div>
+# Метод: schedule.delGroup<a name="schedule.delGroup"></a>
 
 Данный метод позволяет преподавателю убирать учебным группам пары.
 - Возможно убирать только те пары, которые ведет сам преподаватель
@@ -907,8 +934,9 @@ statuscode: 200
 ```
 statuscode: 200
 ```
-
-# Метод: schedule.get<a name="schedule.get"/>
+
+<div class="page-break"></div>
+# Метод: schedule.get<a name="schedule.get"></a>
 
 Возвращает расписание заданной группы или преподавателя.
 
@@ -994,8 +1022,9 @@ statuscode: 200
 ...
 ]
 ```
-
-# Метод: student.changeGroup<a name="student.changeGroup"/>
+
+<div class="page-break"></div>
+# Метод: student.changeGroup<a name="student.changeGroup"></a>
 
 Данный метод позволяет студенту изменить свою учебную группу.
 
@@ -1025,8 +1054,9 @@ statuscode: 200
 ```
 statuscode: 200
 ```
-
-# Метод: student.get<a name="student.get"/>
+
+<div class="page-break"></div>
+# Метод: student.get<a name="student.get"></a>
 
 Данный метод обеспечивает получение данных о заданном студенте.
 
@@ -1074,8 +1104,9 @@ statuscode: 200
   "levelOfAccess": 0
 }
 ```
-
-# Метод: student.search<a name="student.search"/>
+
+<div class="page-break"></div>
+# Метод: student.search<a name="student.search"></a>
 
 Данный метод позволяет найти студента по его фамилии, имени или отчеству.
 Возвращает информацию о студенте с заданным полем **name**
@@ -1124,8 +1155,9 @@ statuscode: 200
   }
 ]
 ```
-
-# Метод: teacher.get<a name="teacher.get"/>
+
+<div class="page-break"></div>
+# Метод: teacher.get<a name="teacher.get"></a>
 
 Данный метод обеспечивает получение данных о заданном преподавателе.
 
@@ -1170,8 +1202,9 @@ statuscode: 200
   "DepartamentID": 74
 }
 ```
-
-# Метод: teacher.getSubjects<a name="teacher.getSubjects"/>
+
+<div class="page-break"></div>
+# Метод: teacher.getSubjects<a name="teacher.getSubjects"></a>
 
 Данный метод позволяет получить список дисциплин, которые преподает заданный преподаватель
 
@@ -1222,8 +1255,9 @@ statuscode: 200
   }
 ]
 ```
-
-# Метод: teacher.search<a name="teacher.search"/>
+
+<div class="page-break"></div>
+# Метод: teacher.search<a name="teacher.search"></a>
 
 Данный метод позволяет найти преподавателя по его фамилии, имени или отчеству.
 Возвращает информацию о преподавателе с заданным полем **name**
@@ -1275,8 +1309,9 @@ statuscode: 200
   }
 ]
 ```
-
-# Метод: user.changeName <a name="user.changeName"/>
+
+<div class="page-break"></div>
+# Метод: user.changeName <a name="user.changeName"></a>
 Данный метод позволяет изменить личную информацию пользователя. Такую как имя, фамилию или отчество
 
 ## Параметры
@@ -1311,8 +1346,9 @@ statuscode: 200
 ```
 statuscode: 200
 ```
-
-# Метод: user.signin <a name="user.changePassword"/>
+
+<div class="page-break"></div>
+# Метод: user.signin <a name="user.changePassword"></a>
 Данный метод обеспечивает cмену пароля пользователя
 
 ## Параметры
@@ -1344,8 +1380,9 @@ statuscode: 200
 ```
 statusCode: 200
 ```
-
-# Метод: user.logout <a name="user.logout"/>
+
+<div class="page-break"></div>
+# Метод: user.logout <a name="user.logout"></a>
 Данный метод обеспечивает корректный выход пользователя из его ученой записи.
 
 ## Параметры
@@ -1373,8 +1410,9 @@ statusCode: 200
 ```
 statusCode: 200
 ```
-
-# Метод: user.signin <a name="user.signin"/>
+
+<div class="page-break"></div>
+# Метод: user.signin <a name="user.signin"></a>
 Данный метод обеспечивает авторизацию пользователя.
 В результате работы метода будет возвращен **token**, который необходим для совершения операций от имени пользователя
 
@@ -1416,8 +1454,9 @@ statusCode: 200
   "token": "niy4vkrlif2mmpbpdlixx3q1"
 }
 ```
-
-# Метод: user.signup<a name="user.signup"/>
+
+<div class="page-break"></div>
+# Метод: user.signup<a name="user.signup"></a>
 Данный метод осуществляет регистрацию пользователя
 
 ## Параметры
@@ -1468,4 +1507,5 @@ statusCode: 200
 ```
 statusCode: 200
 ```
-
+
+<div class="page-break"></div>

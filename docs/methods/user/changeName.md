@@ -1,4 +1,4 @@
-# Метод: user.changeName <a name="user.changeName"/>
+# Метод: user.changeName <a name="user.changeName"></a>
 Данный метод позволяет изменить личную информацию пользователя. Такую как имя, фамилию или отчество
 
 ## Параметры

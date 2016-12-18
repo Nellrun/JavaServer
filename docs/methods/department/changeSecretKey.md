@@ -1,4 +1,4 @@
-# Метод: deparment.changeSecretKey<a name="deparment.changeSecretKey"/>
+# Метод: deparment.changeSecretKey<a name="deparment.changeSecretKey"></a>
 
 Данный метод позволяет изменить **любому** преподавателю секретный ключ своей кафедры.
 Данный метод доступен только для авторизованных преподавателей

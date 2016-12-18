@@ -1,4 +1,4 @@
-# Метод: schedule.addGroup<a name="schedule.addGroup"/>
+# Метод: schedule.addGroup<a name="schedule.addGroup"></a>
 
 Данный метод позволяет преподавателю добавлять учебным группам пары.
 - Пары могут добавляться группам, у которых в данное время стоит другая пара
