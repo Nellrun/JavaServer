@@ -1,14 +1,19 @@
 package tables;
 
+import java.sql.Date;
+
 /**
  * Created by root on 12/17/16.
  */
 public class Announcement {
     private int id;
     private int scheduleID;
-    private int importance;
-    private int creatorID;
+    private String firstName;
+    private String secondName;
+    private String middleName;
     private String text;
+    private Date announceTime;
+    private Date pairDate;
 
     public int getId() {
         return id;
@@ -16,6 +21,14 @@ public class Announcement {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public int getScheduleID() {
@@ -26,27 +39,43 @@ public class Announcement {
         this.scheduleID = scheduleID;
     }
 
-    public int getImportance() {
-        return importance;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setImportance(int importance) {
-        this.importance = importance;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public int getCreatorID() {
-        return creatorID;
+    public String getSecondName() {
+        return secondName;
     }
 
-    public void setCreatorID(int creatorID) {
-        this.creatorID = creatorID;
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
     }
 
-    public String getText() {
-        return text;
+    public String getMiddleName() {
+        return middleName;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public Date getAnnounceTime() {
+        return announceTime;
+    }
+
+    public void setAnnounceTime(Date announceTime) {
+        this.announceTime = announceTime;
+    }
+
+    public Date getPairDate() {
+        return pairDate;
+    }
+
+    public void setPairDate(Date pairDate) {
+        this.pairDate = pairDate;
     }
 }

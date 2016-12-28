@@ -49,7 +49,9 @@ public class Main {
         context.addServlet(new ServletHolder(new ScheduleAddGroupPage(jdbcContext, sessionToLogin)), "/api/schedule.addGroup");
         context.addServlet(new ServletHolder(new ScheduleDelGroupPage(jdbcContext, sessionToLogin)), "/api/schedule.delGroup");
 
-
+        context.addServlet(new ServletHolder(new AnnouncementGetPage(jdbcContext, sessionToLogin)), "/api/announcement.get");
+        context.addServlet(new ServletHolder(new AnnouncementDelPage(jdbcContext, sessionToLogin)), "/api/announcement.del");
+        context.addServlet(new ServletHolder(new AnnouncementAddPage(jdbcContext, sessionToLogin)), "/api/announcement.add");
 
         Server server = new Server(8080);
         server.setHandler(context);

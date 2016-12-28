@@ -5,6 +5,8 @@ import errors.AccessDenidedError;
 import errors.ParameterError;
 import main.Checker;
 import org.springframework.context.ApplicationContext;
+import org.springframework.dao.EmptyResultDataAccessException;
+import tables.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by root on 12/28/16.
@@ -28,6 +31,8 @@ public class AnnouncementGetPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("text/json;charset=utf-8");
+
         String token;
         int count;
 
@@ -54,7 +59,36 @@ public class AnnouncementGetPage extends HttpServlet {
 
         String login = sessionToLogin.get(token);
 
+        AnnouncementDAO announcementDAO = (AnnouncementDAO) context.getBean("AnnouncementDAO");
 
+        List<Announcement> announcements = null;
 
+        try {
+            TeacherDAO teacherDAO = (TeacherDAO) context.getBean("TeacherDAO");
+            Teacher teacher = teacherDAO.getTeacherByLogin(login);
+            announcements = announcementDAO.getByTeacherID(teacher.getId(), count);
+        }
+        catch (EmptyResultDataAccessException e) {
+            StudentDAO studentDAO = (StudentDAO) context.getBean("StudentDAO");
+            Student student = studentDAO.getStudentByLogin(login);
+            if (student.getLevelOfAccess() > 0) {
+                announcements = announcementDAO.getByGroupID(student.getGroupID(), count);
+            }
+            else {
+                String out = new GsonBuilder()
+                        .excludeFieldsWithModifiers(Modifier.PRIVATE)
+                        .create()
+                        .toJson(new AccessDenidedError());
+                resp.getWriter().write(out);
+                resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            }
+        }
+
+        String out = new GsonBuilder()
+                .create()
+                .toJson(announcements);
+
+        resp.getWriter().write(out);
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 }

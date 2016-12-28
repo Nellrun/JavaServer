@@ -11,6 +11,11 @@
         <property name="password" value="!_qdSmo27"/>
     </bean>
 
+    <bean id="AnnouncementDAO"
+          class="tables.AnnouncementDAO">
+        <property name="dataSource"  ref="dataSource" />
+    </bean>
+
     <bean id="SubjectDAO"
           class="tables.SubjectDAO">
         <property name="dataSource"  ref="dataSource" />
